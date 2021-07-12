@@ -42,12 +42,12 @@ android {
         kotlinCompilerVersion '1.4.32'
     }
 
-//    testOptions.unitTests.all {
-//        useJUnitPlatform()
-//        testLogging {
-//            events 'passed', 'failed', 'skipped', 'standardOut', 'standardError'
-//        }
-//    }
+    testOptions.unitTests.all {
+        useJUnitPlatform()
+        testLogging {
+            events 'passed', 'failed', 'skipped', 'standardOut', 'standardError'
+        }
+    }
 }
 
 dependencies {
