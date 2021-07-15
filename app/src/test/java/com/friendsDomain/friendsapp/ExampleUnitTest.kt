@@ -1,4 +1,4 @@
-package com.example.friendsapp
+package com.friendsDomain.friendsapp
 
 import org.junit.Test
 

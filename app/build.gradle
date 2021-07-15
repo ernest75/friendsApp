@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.friendsapp"
+        applicationId "com.friendsDomain.friendsapp"
         minSdk 24
         targetSdk 30
         versionCode 1
@@ -20,22 +20,10 @@ android {
         }
     }
 
-    task printJavaHome{ println System.getenv("HOME") }
-
-    signingConfigs{
-        release{
-            storeFile file(System.getenv("HOME")+"/keystores")
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
     compileOptions {

@@ -1,4 +1,4 @@
-package com.example.friendsapp.ui.theme
+package com.friendsDomain.friendsapp.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

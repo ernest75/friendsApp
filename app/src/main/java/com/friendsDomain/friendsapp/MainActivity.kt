@@ -1,4 +1,4 @@
-package com.example.friendsapp
+package com.friendsDomain.friendsapp
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.friendsapp.ui.theme.FriendsAppTheme
+import com.friendsDomain.friendsapp.ui.theme.FriendsAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
