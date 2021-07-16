@@ -82,7 +82,7 @@ jobs:
 
   distribute:
     name: Distribute app bundle to PlayStore
-    needs firebase
+    needs: firebase
     runs-on: ubuntu-latest
 
     steps:
