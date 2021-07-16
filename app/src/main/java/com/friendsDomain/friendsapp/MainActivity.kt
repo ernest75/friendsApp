@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
             FriendsAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                    Greeting("Friends app")
                 }
             }
         }
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+    Text(text = "How are you ?  $name!")
 }
 
 @Preview(showBackground = true)
