@@ -42,6 +42,10 @@ android {
         kotlinCompilerVersion '1.5.10'
     }
 
+    packagingOptions {
+        pickFirst  'META-INF/*'
+    }
+
     testOptions.unitTests.all {
         testLogging {
             events 'passed', 'failed', 'skipped', 'standardOut', 'standardError'
