@@ -77,7 +77,7 @@ jobs:
           export_default_credentials: true
 
       - name: Run instrumentation tests in Firebase Test Lab
-        run: gcloud firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --devic
+        run: gcloud firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=flame,version=30
 
 
   distribute:
