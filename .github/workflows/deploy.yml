@@ -92,7 +92,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-
        - name: Version bump
         uses: chkfung/android-version-actions@v1.1
         with:
