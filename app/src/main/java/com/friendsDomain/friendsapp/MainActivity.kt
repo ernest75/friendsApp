@@ -9,6 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.friendsDomain.friendsapp.ui.signup.SignUp
 import com.friendsDomain.friendsapp.ui.theme.FriendsAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,24 +17,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FriendsAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Friends app")
+                    SignUp()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "How are you ? $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    FriendsAppTheme {
-        Greeting("Android")
-    }
-}
