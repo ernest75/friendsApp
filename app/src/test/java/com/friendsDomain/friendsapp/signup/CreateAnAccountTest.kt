@@ -14,11 +14,11 @@ class CreateAnAccountTest {
 
     @Test
     fun accountCreated() {
+        val maya = User("mayaId","maya@friends.com","about maya")
         val viewModel = SignUpViewModel(RegexCredentialsValidator())
 
-        viewModel.createAccount("maya@friends.com","MaYa123@456","about maya")
+        viewModel.createAccount(maya.email,"MaYa123@456",maya.about)
 
-        val maya = User("mayaId","maya@friends.com","about maya")
         assertEquals(SignUpState.SignedUp(maya),viewModel.signUpState.value)
     }
 }
