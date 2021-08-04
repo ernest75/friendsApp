@@ -30,11 +30,19 @@ class CredentialsValidationTest {
         assertEquals(SignUpState.BadEmail,viewModel.signUpState.value)
     }
     
-    @Test
-    fun invalidPassword() {
+    @ParameterizedTest
+    @CsvSource(
+        "''",
+        "'     '",
+        "'12345678'",
+        "'abcdDEF678'",
+        "'abcd678#$'",
+        "'ABCD678#$'",
+    )
+    fun invalidPassword(password: String) {
         val viewModel = SignUpViewModel()
 
-        viewModel.createAccount("ernest@friemds.com","",":about:")
+        viewModel.createAccount("ernest@friemds.com", password,":about:")
 
         assertEquals(SignUpState.BadPassword,viewModel.signUpState.value )
     }
