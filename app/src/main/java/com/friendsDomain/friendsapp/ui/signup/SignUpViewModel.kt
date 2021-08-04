@@ -2,6 +2,7 @@ package com.friendsDomain.friendsapp.ui.signup
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.friendsDomain.friendsapp.domain.user.User
 import com.friendsDomain.friendsapp.domain.validation.CredentialsValidationResult
 import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
@@ -18,11 +19,18 @@ class SignUpViewModel(
         password: String,
         about: String
     ) {
+
+
         when (credentialsValidator.validate(email, password)) {
             is CredentialsValidationResult.InvalidEmail ->
                 _mutableSignUpState.value = SignUpState.BadEmail
             is CredentialsValidationResult.InvalidPassword ->
                 _mutableSignUpState.value = SignUpState.BadPassword
+            is CredentialsValidationResult.Valid -> {
+                val user = User("mayaId", "maya@friends.com", "about maya")
+                _mutableSignUpState.value = SignUpState.SignedUp(user)
+            }
+
         }
     }
 

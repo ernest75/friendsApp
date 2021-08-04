@@ -51,12 +51,14 @@ class CredentialsValidationTest {
     
     @Test
     fun validCredentials() {
-
         val validator = RegexCredentialsValidator()
+
         val result = validator.validate("ernest@friemds.com", "aBc@123456")
+
         assertEquals(CredentialsValidationResult.Valid,result)
 
     }
+
 
 
 }
