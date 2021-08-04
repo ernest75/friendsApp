@@ -1,9 +1,9 @@
 package com.friendsDomain.friendsapp.signup
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
+import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.SignUpViewModel
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
@@ -23,7 +23,7 @@ class CredentialsValidationTest {
 
     )
     fun invalidEmail(email: String) {
-        val viewModel = SignUpViewModel()
+        val viewModel = SignUpViewModel(RegexCredentialsValidator())
 
         viewModel.createAccount(email,":password:",":about:")
 
@@ -40,7 +40,7 @@ class CredentialsValidationTest {
         "'ABCD678#$'",
     )
     fun invalidPassword(password: String) {
-        val viewModel = SignUpViewModel()
+        val viewModel = SignUpViewModel(RegexCredentialsValidator())
 
         viewModel.createAccount("ernest@friemds.com", password,":about:")
 
