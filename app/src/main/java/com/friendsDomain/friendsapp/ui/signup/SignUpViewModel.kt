@@ -14,8 +14,6 @@ class SignUpViewModel(
     private val _mutableSignUpState = MutableLiveData<SignUpState>()
     val signUpState: LiveData<SignUpState> = _mutableSignUpState
 
-    private val usersForPassword = mutableMapOf<String, MutableList<User>>()
-
     fun createAccount(
         email: String,
         password: String,
@@ -49,14 +47,33 @@ class SignUpViewModel(
         password: String,
         about: String
     ): User {
-        if( usersForPassword.values.flatten().any { it.email == email }){
-            throw DuplicateAccountException()
-        }
-        val userId = email.takeWhile { it != '@' } + "Id"
+        checkAccountExists(email)
+        val userId = createUserIdFor(email)
         val user = User(userId, email, about)
-        usersForPassword.getOrPut(password, ::mutableListOf).add(user)
+        createUser(password, user)
         return user
     }
+
+    private fun createUser(
+        password: String,
+        user: User
+    ) {
+        usersForPassword.getOrPut(password, ::mutableListOf).add(user)
+    }
+
+    private fun createUserIdFor(email: String): String {
+        val userId = email.takeWhile { it != '@' } + "Id"
+        return userId
+    }
+
+    private fun checkAccountExists(email: String) {
+        if (usersForPassword.values.flatten().any { it.email == email }) {
+            throw DuplicateAccountException()
+        }
+    }
+
+    private val usersForPassword = mutableMapOf<String, MutableList<User>>()
+
 
     class DuplicateAccountException : Throwable()
 }
