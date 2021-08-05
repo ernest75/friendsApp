@@ -75,7 +75,6 @@ class SignUpViewModel(
                 throw DuplicateAccountException()
             }
         }
-
     }
 
     private fun createUser(
