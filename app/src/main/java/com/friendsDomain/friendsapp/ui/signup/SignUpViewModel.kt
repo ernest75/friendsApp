@@ -19,19 +19,18 @@ class SignUpViewModel(
         password: String,
         about: String
     ) {
-
-
         when (credentialsValidator.validate(email, password)) {
             is CredentialsValidationResult.InvalidEmail ->
                 _mutableSignUpState.value = SignUpState.BadEmail
             is CredentialsValidationResult.InvalidPassword ->
                 _mutableSignUpState.value = SignUpState.BadPassword
             is CredentialsValidationResult.Valid -> {
+                val userId = email.takeWhile { it != '@' } + "Id"
                 if (email.contains("bob")) {
-                    val user = User("bobId", "bob@friends.com", "about bob")
+                    val user = User(userId, email, about)
                     _mutableSignUpState.value = SignUpState.SignedUp(user)
                 } else {
-                    val user = User("mayaId", "maya@friends.com", "about maya")
+                    val user = User(userId, email, about)
                     _mutableSignUpState.value = SignUpState.SignedUp(user)
                 }
             }
