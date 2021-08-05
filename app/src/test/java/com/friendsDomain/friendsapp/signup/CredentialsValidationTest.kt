@@ -1,6 +1,8 @@
 package com.friendsDomain.friendsapp.signup
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
+import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
+import com.friendsDomain.friendsapp.domain.user.UserRepository
 import com.friendsDomain.friendsapp.domain.validation.CredentialsValidationResult
 import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.SignUpViewModel
@@ -25,7 +27,9 @@ class CredentialsValidationTest {
 
     )
     fun invalidEmail(email: String) {
-        val viewModel = SignUpViewModel(RegexCredentialsValidator())
+        val viewModel = SignUpViewModel(RegexCredentialsValidator(),
+            UserRepository(InMemoryUserCatalog())
+        )
 
         viewModel.createAccount(email,":password:",":about:")
 
@@ -42,7 +46,8 @@ class CredentialsValidationTest {
         "'ABCD678#$'",
     )
     fun invalidPassword(password: String) {
-        val viewModel = SignUpViewModel(RegexCredentialsValidator())
+        val viewModel = SignUpViewModel(RegexCredentialsValidator(),
+            UserRepository(InMemoryUserCatalog()))
 
         viewModel.createAccount("ernest@friemds.com", password,":about:")
 

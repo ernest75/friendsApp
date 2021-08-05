@@ -1,7 +1,9 @@
 package com.friendsDomain.friendsapp.signup
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
+import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.domain.user.User
+import com.friendsDomain.friendsapp.domain.user.UserRepository
 import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.SignUpViewModel
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
@@ -15,7 +17,8 @@ class CreateAnAccountTest {
     @Test
     fun accountCreated() {
         val maya = User("mayaId","maya@friends.com","about maya")
-        val viewModel = SignUpViewModel(RegexCredentialsValidator())
+        val viewModel = SignUpViewModel(RegexCredentialsValidator(),
+            UserRepository(InMemoryUserCatalog()))
 
         viewModel.createAccount(maya.email,"MaYa123@456",maya.about)
 
@@ -25,7 +28,8 @@ class CreateAnAccountTest {
     @Test
     fun anotherAccountCreated() {
         val bob = User("bobId","bob@friends.com","about bob")
-        val viewModel = SignUpViewModel(RegexCredentialsValidator())
+        val viewModel = SignUpViewModel(RegexCredentialsValidator(),
+            UserRepository(InMemoryUserCatalog()))
         viewModel.createAccount(bob.email,"Pas123$%564",bob.about)
         assertEquals(SignUpState.SignedUp(bob),viewModel.signUpState.value, )
     }
@@ -34,7 +38,8 @@ class CreateAnAccountTest {
     fun createDuplicateAccount() {
         val anna = User("annaId","anna@friends.com","about Anna")
         val password = "AnnaPass12$$"
-        val viewModel = SignUpViewModel(RegexCredentialsValidator()).also {
+        val viewModel = SignUpViewModel(RegexCredentialsValidator(),
+            UserRepository(InMemoryUserCatalog())).also {
             it.createAccount(anna.email,password,anna.about)
         }
         viewModel.createAccount(anna.email, password,anna.about)

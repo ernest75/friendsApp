@@ -9,8 +9,9 @@ import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
 
 class SignUpViewModel(
-    private val credentialsValidator: RegexCredentialsValidator
-    ) {
+    private val credentialsValidator: RegexCredentialsValidator,
+    private val userRepository: UserRepository
+) {
 
     private val _mutableSignUpState = MutableLiveData<SignUpState>()
     val signUpState: LiveData<SignUpState> = _mutableSignUpState
@@ -29,8 +30,6 @@ class SignUpViewModel(
                 _mutableSignUpState.value = userRepository.signUp(email, password, about)
         }
     }
-
-    private val userRepository = UserRepository(InMemoryUserCatalog())
 
 }
 
