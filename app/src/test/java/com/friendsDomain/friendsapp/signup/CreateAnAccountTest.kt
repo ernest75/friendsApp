@@ -40,4 +40,6 @@ class CreateAnAccountTest {
         viewModel.createAccount(anna.email, password,anna.about)
         assertEquals(SignUpState.DuplicateAccount,viewModel.signUpState.value )
     }
+
+
 }
