@@ -14,11 +14,16 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantTaskExecutorExtension::class)
 class CreateAnAccountTest {
 
+    private val credentialsValidator = RegexCredentialsValidator()
+    private val viewModel = SignUpViewModel(
+        credentialsValidator,
+                UserRepository(InMemoryUserCatalog())
+            )
+
     @Test
     fun accountCreated() {
         val maya = User("mayaId","maya@friends.com","about maya")
-        val viewModel = SignUpViewModel(RegexCredentialsValidator(),
-            UserRepository(InMemoryUserCatalog()))
+
 
         viewModel.createAccount(maya.email,"MaYa123@456",maya.about)
 
@@ -28,9 +33,9 @@ class CreateAnAccountTest {
     @Test
     fun anotherAccountCreated() {
         val bob = User("bobId","bob@friends.com","about bob")
-        val viewModel = SignUpViewModel(RegexCredentialsValidator(),
-            UserRepository(InMemoryUserCatalog()))
+
         viewModel.createAccount(bob.email,"Pas123$%564",bob.about)
+
         assertEquals(SignUpState.SignedUp(bob),viewModel.signUpState.value, )
     }
     
@@ -38,11 +43,12 @@ class CreateAnAccountTest {
     fun createDuplicateAccount() {
         val anna = User("annaId","anna@friends.com","about Anna")
         val password = "AnnaPass12$$"
-        val viewModel = SignUpViewModel(RegexCredentialsValidator(),
-            UserRepository(InMemoryUserCatalog())).also {
-            it.createAccount(anna.email,password,anna.about)
-        }
+        val usersForPassword = mutableMapOf(password to mutableListOf(anna))
+        val userRepository = UserRepository(InMemoryUserCatalog(usersForPassword))
+        val viewModel = SignUpViewModel(credentialsValidator, userRepository)
+
         viewModel.createAccount(anna.email, password,anna.about)
+
         assertEquals(SignUpState.DuplicateAccount,viewModel.signUpState.value )
     }
 
