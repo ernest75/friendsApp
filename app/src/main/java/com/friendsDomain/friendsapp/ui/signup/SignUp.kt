@@ -22,10 +22,12 @@ import com.friendsDomain.friendsapp.R
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.domain.user.UserRepository
 import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
+import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
 
 @Composable
-@Preview(device = Devices.PIXEL)
-fun SignUp() {
+fun SignUp(
+    onSignedUp:() -> Unit
+) {
 
     val credentialsValidator = RegexCredentialsValidator()
     val userRepository = UserRepository(InMemoryUserCatalog())
@@ -34,6 +36,10 @@ fun SignUp() {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val signUpState by signUpViewModel.signUpState.observeAsState()
+
+    if (signUpState is SignUpState.SignedUp){
+        onSignedUp()
+    }
 
     Column(
         modifier = Modifier
@@ -52,7 +58,9 @@ fun SignUp() {
         Spacer(modifier= Modifier.height(8.dp))
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = {},
+            onClick = {
+                      signUpViewModel.createAccount(email,password,"")
+            },
         ) {
             Text(text = stringResource(id = R.string.signUp))
         }

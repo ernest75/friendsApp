@@ -13,7 +13,7 @@ class SignUpTest {
     @Test
     fun performSignUp(){
         launchSignUpScreen(signUpTestRule){
-            typeEmail("ernest@friends.app")
+            typeEmail("ernest@friends.com")
             typePassword("Passw0rd!")
             submit()
         } verify {

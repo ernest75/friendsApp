@@ -1,10 +1,7 @@
 package com.friendsDomain.friendsapp.signup
 
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.friendsDomain.friendsapp.MainActivity
 import com.friendsDomain.friendsapp.R
@@ -45,7 +42,8 @@ class SignUpVerification(
 ) {
     fun timelineScreenIsPresent() {
         val timeline = rule.activity.getString(R.string.timeline)
-        rule.onNodeWithText(timeline).assertIsDisplayed()
+       // rule.onNodeWithText(timeline).assertIsDisplayed()
+        rule.onNodeWithContentDescription(timeline)
     }
 
 }
