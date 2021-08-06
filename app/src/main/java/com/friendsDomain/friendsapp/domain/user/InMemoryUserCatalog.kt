@@ -16,11 +16,10 @@ class InMemoryUserCatalog(private val usersForPassword: MutableMap<String, Mutab
         return user
     }
 
-    private fun saveUser(
-        password: String,
-        user: User
-    ) {
-        usersForPassword.getOrPut(password, ::mutableListOf).add(user)
+    private fun checkAccountExists(email: String) {
+        if (usersForPassword.values.flatten().any { it.email == email }) {
+            throw DuplicateAccountException()
+        }
     }
 
     private fun createUserIdFor(email: String): String {
@@ -28,9 +27,7 @@ class InMemoryUserCatalog(private val usersForPassword: MutableMap<String, Mutab
         return userId
     }
 
-    private fun checkAccountExists(email: String) {
-        if (usersForPassword.values.flatten().any { it.email == email }) {
-            throw DuplicateAccountException()
-        }
+    private fun saveUser(password: String, user: User) {
+        usersForPassword.getOrPut(password, ::mutableListOf).add(user)
     }
 }
