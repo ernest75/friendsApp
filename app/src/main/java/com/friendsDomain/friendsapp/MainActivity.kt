@@ -11,6 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,29 +21,28 @@ import androidx.navigation.compose.rememberNavController
 import com.friendsDomain.friendsapp.ui.signup.SignUp
 import com.friendsDomain.friendsapp.ui.theme.FriendsAppTheme
 import androidx.compose.ui.layout.ContentScale
-
-
+import com.friendsDomain.friendsapp.ui.timeline.Timeline
 
 
 class MainActivity : ComponentActivity() {
+
+    companion object {
+        private const val SIGN_UP = "signUp"
+        private const val TIME_LINE = "timeline"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             FriendsAppTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    NavHost(navController = navController, startDestination = "signUp"){
-                        composable("signUp") {
-                            SignUp(onSignedUp = {navController.navigate("timeline") })
+                    NavHost(navController = navController, startDestination = Companion.SIGN_UP){
+                        composable(Companion.SIGN_UP) {
+                            SignUp(onSignedUp = {navController.navigate(TIME_LINE) })
                         }
-                        composable("timeline"){
-                            Image(
-                                painterResource(id = R.drawable.ic_launcher_background),
-                                contentDescription = "Timeline",
-                                modifier = Modifier.fillMaxWidth(),
-                                contentScale = ContentScale.Crop
-                            )
-
+                        composable(TIME_LINE){
+                            Timeline()
                         }
                     }
                 }

@@ -42,7 +42,7 @@ class SignUpVerification(
 ) {
     fun timelineScreenIsPresent() {
         val timeline = rule.activity.getString(R.string.timeline)
-       // rule.onNodeWithText(timeline).assertIsDisplayed()
+        //rule.onNodeWithText(timeline).assertIsDisplayed()
         rule.onNodeWithContentDescription(timeline)
     }
 
