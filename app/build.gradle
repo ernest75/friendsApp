@@ -66,6 +66,15 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$composeVersion"
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha06"
 
+    def koin_version= "3.1.2"
+    // Koin main features for Android (Scope,ViewModel ...)
+    implementation "io.insert-koin:koin-android:$koin_version"
+    // Koin Java Compatibility
+    implementation "io.insert-koin:koin-android-compat:$koin_version"
+    // Koin for Jetpack WorkManager
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+    // Koin for Jetpack Compose
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.2"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.7.2"
