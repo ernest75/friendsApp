@@ -13,7 +13,6 @@ import com.friendsDomain.friendsapp.ui.signup.SignUpViewModel
 import com.friendsDomain.friendsapp.ui.theme.FriendsAppTheme
 import com.friendsDomain.friendsapp.ui.timeline.Timeline
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.Koin
 
 
 class MainActivity : ComponentActivity() {

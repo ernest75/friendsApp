@@ -42,8 +42,11 @@ class SignUpVerification(
 ) {
     fun timelineScreenIsPresent() {
         val timeline = rule.activity.getString(R.string.timeline)
-        //rule.onNodeWithText(timeline).assertIsDisplayed()
-        rule.onNodeWithContentDescription(timeline)
+        rule.onNodeWithText(timeline).assertIsDisplayed()
+    }
+
+    fun duplicateAccountErrorIsShown() {
+        //rule.onNodeWithText(duplicateAccountError).assertIsDisplayed()
     }
 
 }

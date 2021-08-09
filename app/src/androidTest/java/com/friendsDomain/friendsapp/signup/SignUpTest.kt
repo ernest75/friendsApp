@@ -20,5 +20,16 @@ class SignUpTest {
             timelineScreenIsPresent()
         }
     }
+    
+//    @Test
+//    fun displayDuplicateAccountError() {
+//        launchSignUpScreen(signUpTestRule){
+//            typeEmail(signedUpUserEmail)
+//            typePassword(signedUserPassword)
+//            submit()
+//        } verify {
+//            duplicateAccountErrorIsShown()
+//        }
+//    }
 
 }
