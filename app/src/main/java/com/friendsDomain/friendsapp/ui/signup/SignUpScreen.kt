@@ -25,7 +25,7 @@ import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
 
 @Composable
-fun SignUp(
+fun SignUpScreen(
     onSignedUp:() -> Unit
 ) {
 

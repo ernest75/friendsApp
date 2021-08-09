@@ -3,24 +3,13 @@ package com.friendsDomain.friendsapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.friendsDomain.friendsapp.ui.signup.SignUp
+import com.friendsDomain.friendsapp.ui.signup.SignUpScreen
 import com.friendsDomain.friendsapp.ui.theme.FriendsAppTheme
-import androidx.compose.ui.layout.ContentScale
 import com.friendsDomain.friendsapp.ui.timeline.Timeline
 
 
@@ -39,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     NavHost(navController = navController, startDestination = Companion.SIGN_UP){
                         composable(Companion.SIGN_UP) {
-                            SignUp(onSignedUp = {navController.navigate(TIME_LINE) })
+                            SignUpScreen(onSignedUp = {navController.navigate(TIME_LINE) })
                         }
                         composable(TIME_LINE){
                             Timeline()
