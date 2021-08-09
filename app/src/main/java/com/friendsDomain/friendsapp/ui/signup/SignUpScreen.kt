@@ -1,6 +1,7 @@
 package com.friendsDomain.friendsapp.ui.signup
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
@@ -17,8 +18,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
-import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
-import com.friendsDomain.friendsapp.domain.user.UserRepository
 import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
 
@@ -33,38 +32,54 @@ fun SignUpScreen(
     var about by remember { mutableStateOf("") }
     val signUpState by signUpViewModel.signUpState.observeAsState()
 
-    if (signUpState is SignUpState.SignedUp){
+    if (signUpState is SignUpState.SignedUp) {
         onSignedUp()
     }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        ScreenTitle(R.string.createAccount)
-        Spacer(modifier= Modifier.height(16.dp))
-
-        EmailField(
-            value = email,
-            onValueChange = {email = it})
-        PasswordField(
-            value = password,
-            onValueChange = {password = it})
-        AboutField(
-            value= about,
-            onValueChange = { about= it }
-        )
-        Spacer(modifier= Modifier.height(8.dp))
-
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                      signUpViewModel.createAccount(email,password,about)
-            },
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Text(text = stringResource(id = R.string.signUp))
+            ScreenTitle(R.string.createAccount)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            EmailField(
+                value = email,
+                onValueChange = { email = it })
+            PasswordField(
+                value = password,
+                onValueChange = { password = it })
+            AboutField(
+                value = about,
+                onValueChange = { about = it }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    signUpViewModel.createAccount(email, password, about)
+                },
+            ) {
+                Text(text = stringResource(id = R.string.signUp))
+            }
         }
+        if (signUpState is SignUpState.DuplicateAccount) {
+            InfoMessage(R.string.duplicateAccountError)
+        }
+    }
+}
+
+@Composable
+fun InfoMessage(@StringRes stringResource: Int) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colors.secondaryVariant)
+    ) {
+
+        Text(text = stringResource(id = stringResource))
     }
 }
 
@@ -84,7 +99,7 @@ private fun ScreenTitle(@StringRes resource: Int) {
 @Composable
 private fun EmailField(
     value: String,
-    onValueChange:(String)-> Unit
+    onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -92,13 +107,14 @@ private fun EmailField(
         label = {
             Text(text = stringResource(id = R.string.email))
         },
-        onValueChange = onValueChange)
+        onValueChange = onValueChange
+    )
 }
 
 @Composable
 private fun PasswordField(
     value: String,
-    onValueChange:(String)-> Unit
+    onValueChange: (String) -> Unit
 ) {
     var isVisible by remember { mutableStateOf(false) }
     val visualTransformation =
@@ -107,7 +123,7 @@ private fun PasswordField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
         trailingIcon = {
-            VisibilityToggle(isVisible){
+            VisibilityToggle(isVisible) {
                 isVisible = !isVisible
             }
         },
@@ -115,17 +131,19 @@ private fun PasswordField(
         label = {
             Text(text = stringResource(id = R.string.password))
         },
-        onValueChange = onValueChange)
+        onValueChange = onValueChange
+    )
 }
 
 @Composable
 private fun VisibilityToggle(
     isVisible: Boolean,
-    onToggle: ()-> Unit) {
+    onToggle: () -> Unit
+) {
     IconButton(onClick = {
         onToggle()
     }) {
-        val resource = if(isVisible) R.drawable.ic_invisible else R.drawable.ic_visible
+        val resource = if (isVisible) R.drawable.ic_invisible else R.drawable.ic_visible
         Icon(
             painter = painterResource(id = resource),
             contentDescription = stringResource(id = R.string.toogleVisibility)
@@ -144,5 +162,6 @@ fun AboutField(
         label = {
             Text(text = stringResource(id = R.string.about))
         },
-        onValueChange = onValueChange)
+        onValueChange = onValueChange
+    )
 }
