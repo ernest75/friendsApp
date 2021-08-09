@@ -9,6 +9,8 @@ sealed class SignUpState {
 
     object BadPassword: SignUpState()
 
-    object DuplicateAccount :SignUpState()
+    object DuplicateAccount: SignUpState()
+
+    object BackEndError: SignUpState()
 
 }

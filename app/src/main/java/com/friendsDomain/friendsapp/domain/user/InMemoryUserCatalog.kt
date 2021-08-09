@@ -3,8 +3,8 @@ package com.friendsDomain.friendsapp.domain.user
 import com.friendsDomain.friendsapp.domain.exceptions.DuplicateAccountException
 
 class InMemoryUserCatalog(private val usersForPassword: MutableMap<String, MutableList<User>> = mutableMapOf()
-) {
-    fun createUser(
+) : UserCatalog {
+    override fun createUser(
         email: String,
         password: String,
         about: String
