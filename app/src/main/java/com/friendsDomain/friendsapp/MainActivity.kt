@@ -9,11 +9,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.friendsDomain.friendsapp.ui.signup.SignUpScreen
+import com.friendsDomain.friendsapp.ui.signup.SignUpViewModel
 import com.friendsDomain.friendsapp.ui.theme.FriendsAppTheme
 import com.friendsDomain.friendsapp.ui.timeline.Timeline
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.Koin
 
 
 class MainActivity : ComponentActivity() {
+
+    private val signUpViewModel: SignUpViewModel by viewModel()
 
     companion object {
         private const val SIGN_UP = "signUp"
@@ -28,7 +33,7 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     NavHost(navController = navController, startDestination = Companion.SIGN_UP){
                         composable(Companion.SIGN_UP) {
-                            SignUpScreen(onSignedUp = {navController.navigate(TIME_LINE) })
+                            SignUpScreen(signUpViewModel) { navController.navigate(TIME_LINE) }
                         }
                         composable(TIME_LINE){
                             Timeline()
