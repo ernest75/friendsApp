@@ -55,4 +55,9 @@ class SignUpVerification(
         rule.onNodeWithText(backEndError).assertIsDisplayed()
     }
 
+    fun offlineErrorIsShown() {
+        val offlineError = rule.activity.getString(R.string.offLineError)
+        rule.onNodeWithText(offlineError).assertIsDisplayed()
+    }
+
 }

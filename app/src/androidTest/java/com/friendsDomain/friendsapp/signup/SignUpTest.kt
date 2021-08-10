@@ -3,6 +3,7 @@ package com.friendsDomain.friendsapp.signup
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.friendsDomain.friendsapp.MainActivity
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
+import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.domain.user.User
 import com.friendsDomain.friendsapp.domain.user.UserCatalog
@@ -72,6 +73,21 @@ class SignUpScreenTest {
 
     }
 
+    @Test
+    fun displayOfflineError(){
+        val replaceModule = module {
+            factory<UserCatalog> {OfflineUserCatalog() }
+        }
+        loadKoinModules(replaceModule)
+        launchSignUpScreen(signUpTestRule){
+            typeEmail("ernest@friends.com")
+            typePassword("Ern3stPass!")
+            submit()
+        } verify {
+            offlineErrorIsShown()
+        }
+    }
+
     @After
     fun tearDown(){
         val resetModule = module {
@@ -91,6 +107,13 @@ class SignUpScreenTest {
 
         override fun createUser(email: String, password: String, about: String): User {
             throw BackendException()
+        }
+
+    }
+
+    class OfflineUserCatalog : UserCatalog {
+        override fun createUser(email: String, password: String, about: String): User {
+            throw ConnectionUnavailableException()
         }
 
     }
