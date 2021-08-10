@@ -18,7 +18,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
-import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
 
 @Composable
@@ -67,6 +66,8 @@ fun SignUpScreen(
         }
         if (signUpState is SignUpState.DuplicateAccount) {
             InfoMessage(R.string.duplicateAccountError)
+        } else if (signUpState is SignUpState.BackEndError){
+            InfoMessage(stringResource = R.string.createAccountError)
         }
     }
 }

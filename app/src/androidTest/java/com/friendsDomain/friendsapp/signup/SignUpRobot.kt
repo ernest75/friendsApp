@@ -50,4 +50,9 @@ class SignUpVerification(
         rule.onNodeWithText(duplicateAccountError).assertIsDisplayed()
     }
 
+    fun backEndErrorIsShown() {
+        val backEndError = rule.activity.getString(R.string.createAccountError)
+        rule.onNodeWithText(backEndError).assertIsDisplayed()
+    }
+
 }

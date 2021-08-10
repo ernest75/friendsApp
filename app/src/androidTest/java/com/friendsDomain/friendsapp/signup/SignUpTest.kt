@@ -2,7 +2,9 @@ package com.friendsDomain.friendsapp.signup
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.friendsDomain.friendsapp.MainActivity
+import com.friendsDomain.friendsapp.domain.exceptions.BackendException
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
+import com.friendsDomain.friendsapp.domain.user.User
 import com.friendsDomain.friendsapp.domain.user.UserCatalog
 import org.junit.After
 import org.junit.Before
@@ -53,6 +55,23 @@ class SignUpScreenTest {
         }
     }
 
+
+    @Test
+    fun displayBackEndError(){
+        val replaceModule = module {
+            factory<UserCatalog> { UnavailableUserCatalog() }
+        }
+        loadKoinModules(replaceModule)
+        launchSignUpScreen(signUpTestRule){
+            typeEmail("joe@friends.com")
+            typePassword("J0ePass!")
+            submit()
+        } verify {
+            backEndErrorIsShown()
+        }
+
+    }
+
     @After
     fun tearDown(){
         val resetModule = module {
@@ -66,6 +85,14 @@ class SignUpScreenTest {
         signedUserPassword: String
     ) {
         userCatalog.createUser(signedUpUserEmail, signedUserPassword, "")
+    }
+
+    class UnavailableUserCatalog : UserCatalog {
+
+        override fun createUser(email: String, password: String, about: String): User {
+            throw BackendException()
+        }
+
     }
 
 }
