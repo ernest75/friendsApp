@@ -30,6 +30,7 @@ fun SignUpScreen(
     var password by remember { mutableStateOf("") }
     var about by remember { mutableStateOf("") }
     var isBadEmail by remember { mutableStateOf(false)}
+    var isBadPassword by remember { mutableStateOf(false)}
     val signUpState by signUpViewModel.signUpState.observeAsState()
 
     if (signUpState is SignUpState.SignedUp) {
@@ -50,6 +51,7 @@ fun SignUpScreen(
                 onValueChange = { email = it })
             PasswordField(
                 value = password,
+                isError = isBadPassword,
                 onValueChange = { password = it })
             AboutField(
                 value = about,
@@ -68,6 +70,8 @@ fun SignUpScreen(
         }
         if (signUpState is SignUpState.BadEmail){
             isBadEmail = true
+        } else if (signUpState is SignUpState.BadPassword){
+            isBadPassword = true
         } else if (signUpState is SignUpState.DuplicateAccount) {
             InfoMessage(R.string.duplicateAccountError)
         } else if (signUpState is SignUpState.BackEndError){
@@ -124,7 +128,8 @@ private fun EmailField(
 @Composable
 private fun PasswordField(
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    isError: Boolean
 ) {
     var isVisible by remember { mutableStateOf(false) }
     val visualTransformation =
@@ -132,6 +137,7 @@ private fun PasswordField(
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
+        isError = isError,
         trailingIcon = {
             VisibilityToggle(isVisible) {
                 isVisible = !isVisible
@@ -139,7 +145,8 @@ private fun PasswordField(
         },
         visualTransformation = visualTransformation,
         label = {
-            Text(text = stringResource(id = R.string.password))
+            val resource = if (isError) R.string.badPasswordError else R.string.password
+            Text(text = stringResource(id = resource))
         },
         onValueChange = onValueChange
     )
