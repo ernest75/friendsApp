@@ -17,53 +17,27 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
+import com.friendsDomain.friendsapp.ui.signup.state.SignUpScreenState
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
 
 @Composable
 fun SignUpScreen(
     signUpViewModel: SignUpViewModel,
     onSignedUp: () -> Unit
 ) {
-
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var about by remember { mutableStateOf("") }
-    var isBadEmail by remember { mutableStateOf(false)}
-    var isBadPassword by remember { mutableStateOf(false)}
-    var currentInfoMessage by remember { mutableStateOf(0)}
-    var isInfoMessageShowing by remember { mutableStateOf(false)}
-
     val coroutineScope = rememberCoroutineScope()
+    val screenState by remember {
+        mutableStateOf(SignUpScreenState(coroutineScope))
+    }
     val signUpState by signUpViewModel.signUpState.observeAsState()
-
-    fun showToggleInfoMessage(@StringRes message: Int) = coroutineScope.launch {
-        if(currentInfoMessage!= message){
-            currentInfoMessage = message
-            if (!isInfoMessageShowing){
-                isInfoMessageShowing = true
-                delay(1500)
-                isInfoMessageShowing = false
-            }
-        }
-    }
-
-
-    fun resetUiState() {
-        currentInfoMessage = 0
-        isInfoMessageShowing = false
-    }
 
     when (signUpState) {
         is SignUpState.SignedUp -> onSignedUp()
-        is SignUpState.BadEmail -> isBadEmail = true
-        is SignUpState.BadPassword -> isBadPassword = true
-        is SignUpState.DuplicateAccount -> showToggleInfoMessage(R.string.duplicateAccountError)
-        is SignUpState.BackEndError -> showToggleInfoMessage(R.string.createAccountError)
-        is SignUpState.Offline -> showToggleInfoMessage(R.string.offLineError)
+        is SignUpState.BadEmail -> screenState.isBadEmail = true
+        is SignUpState.BadPassword -> screenState.isBadPassword = true
+        is SignUpState.DuplicateAccount -> screenState.showToggleInfoMessage(R.string.duplicateAccountError)
+        is SignUpState.BackEndError -> screenState.showToggleInfoMessage(R.string.createAccountError)
+        is SignUpState.Offline -> screenState.showToggleInfoMessage(R.string.offLineError)
     }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -75,32 +49,34 @@ fun SignUpScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             EmailField(
-                value = email,
-                isError = isBadEmail,
-                onValueChange = { email = it })
+                value = screenState.email,
+                isError = screenState.isBadEmail,
+                onValueChange = { screenState.email = it })
             PasswordField(
-                value = password,
-                isError = isBadPassword,
-                onValueChange = { password = it })
+                value = screenState.password,
+                isError = screenState.isBadPassword,
+                onValueChange = { screenState.password = it })
             AboutField(
-                value = about,
-                onValueChange = { about = it }
+                value = screenState.about,
+                onValueChange = { screenState.about = it }
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    resetUiState()
-                    signUpViewModel.createAccount(email, password, about)
+                    screenState.resetUiState()
+                    with(screenState){
+                        signUpViewModel.createAccount(email, password, about)
+                    }
                 },
             ) {
                 Text(text = stringResource(id = R.string.signUp))
             }
         }
         InfoMessage(
-            isVisible = isInfoMessageShowing,
-            stringResource = currentInfoMessage
+            isVisible = screenState.isInfoMessageShowing,
+            stringResource = screenState.currentInfoMessage
         )
     }
 }
