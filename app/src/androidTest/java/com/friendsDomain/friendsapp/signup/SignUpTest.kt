@@ -3,6 +3,7 @@ package com.friendsDomain.friendsapp.signup
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.friendsDomain.friendsapp.MainActivity
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
+import com.friendsDomain.friendsapp.domain.user.UserCatalog
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -18,7 +19,7 @@ class SignUpScreenTest {
     private val userCatalog = InMemoryUserCatalog()
 
     private val signUpModule = module {
-        factory { userCatalog  }
+        factory <UserCatalog>{ userCatalog  }
     }
 
     @Before
