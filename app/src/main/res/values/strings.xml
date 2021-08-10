@@ -10,6 +10,6 @@
     <string name="duplicateAccountError">An account with this email has been already created</string>
     <string name="createAccountError">Could not create an account</string>
     <string name="offLineError">Unable to create account, check your internet connection please</string>
-    <string name="badEmailError">"Please check the email "</string>
-    <string name="badPasswordError">Please check your password</string>
+    <string name="badEmailError">"Invalid email format"</string>
+    <string name="badPasswordError">"Invalid password format"</string>
 </resources>

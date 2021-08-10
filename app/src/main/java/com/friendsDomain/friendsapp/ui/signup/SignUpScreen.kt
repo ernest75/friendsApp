@@ -29,6 +29,7 @@ fun SignUpScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var about by remember { mutableStateOf("") }
+    var isBadEmail by remember { mutableStateOf(false)}
     val signUpState by signUpViewModel.signUpState.observeAsState()
 
     if (signUpState is SignUpState.SignedUp) {
@@ -45,6 +46,7 @@ fun SignUpScreen(
 
             EmailField(
                 value = email,
+                isError = isBadEmail,
                 onValueChange = { email = it })
             PasswordField(
                 value = password,
@@ -64,16 +66,14 @@ fun SignUpScreen(
                 Text(text = stringResource(id = R.string.signUp))
             }
         }
-        if (signUpState is SignUpState.DuplicateAccount) {
+        if (signUpState is SignUpState.BadEmail){
+            isBadEmail = true
+        } else if (signUpState is SignUpState.DuplicateAccount) {
             InfoMessage(R.string.duplicateAccountError)
         } else if (signUpState is SignUpState.BackEndError){
             InfoMessage(stringResource = R.string.createAccountError)
         } else if (signUpState is SignUpState.Offline){
             InfoMessage(stringResource = R.string.offLineError)
-        } else if (signUpState is SignUpState.BadEmail){
-            InfoMessage(stringResource = R.string.badEmailError)
-        } else if (signUpState is SignUpState.BadPassword){
-            InfoMessage(stringResource = R.string.badPasswordError)
         }
     }
 }
@@ -106,13 +106,16 @@ private fun ScreenTitle(@StringRes resource: Int) {
 @Composable
 private fun EmailField(
     value: String,
-    onValueChange: (String) -> Unit
+    onValueChange: (String) -> Unit,
+    isError: Boolean
 ) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
+        isError = isError,
         label = {
-            Text(text = stringResource(id = R.string.email))
+            val resource = if (isError) R.string.badEmailError else R.string.email
+            Text(text = stringResource(id =resource))
         },
         onValueChange = onValueChange
     )
