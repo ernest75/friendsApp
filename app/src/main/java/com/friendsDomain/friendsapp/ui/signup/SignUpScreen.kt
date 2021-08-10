@@ -72,6 +72,8 @@ fun SignUpScreen(
             InfoMessage(stringResource = R.string.offLineError)
         } else if (signUpState is SignUpState.BadEmail){
             InfoMessage(stringResource = R.string.badEmailError)
+        } else if (signUpState is SignUpState.BadPassword){
+            InfoMessage(stringResource = R.string.badPasswordError)
         }
     }
 }
