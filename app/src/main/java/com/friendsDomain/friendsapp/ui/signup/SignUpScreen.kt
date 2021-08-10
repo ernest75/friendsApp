@@ -1,16 +1,15 @@
 package com.friendsDomain.friendsapp.ui.signup
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.typography
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -19,6 +18,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 @Composable
 fun SignUpScreen(
@@ -32,15 +35,29 @@ fun SignUpScreen(
     var isBadEmail by remember { mutableStateOf(false)}
     var isBadPassword by remember { mutableStateOf(false)}
     var currentInfoMessage by remember { mutableStateOf(0)}
+    var isInfoMessageShowing by remember { mutableStateOf(false)}
+
+    val coroutineScope = rememberCoroutineScope()
     val signUpState by signUpViewModel.signUpState.observeAsState()
+
+    fun showToggleInfoMessage(@StringRes message: Int) = coroutineScope.launch {
+        if(currentInfoMessage!= message){
+            currentInfoMessage = message
+            if (!isInfoMessageShowing){
+                isInfoMessageShowing = true
+                delay(1500)
+                isInfoMessageShowing = false
+            }
+        }
+    }
 
     when (signUpState) {
         is SignUpState.SignedUp -> onSignedUp()
         is SignUpState.BadEmail -> isBadEmail = true
         is SignUpState.BadPassword -> isBadPassword = true
-        is SignUpState.DuplicateAccount -> currentInfoMessage = R.string.duplicateAccountError
-        is SignUpState.BackEndError -> currentInfoMessage = R.string.createAccountError
-        is SignUpState.Offline -> currentInfoMessage = R.string.offLineError
+        is SignUpState.DuplicateAccount -> showToggleInfoMessage(R.string.duplicateAccountError)
+        is SignUpState.BackEndError -> showToggleInfoMessage(R.string.createAccountError)
+        is SignUpState.Offline -> showToggleInfoMessage(R.string.offLineError)
     }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -74,31 +91,47 @@ fun SignUpScreen(
                 Text(text = stringResource(id = R.string.signUp))
             }
         }
-        if (currentInfoMessage != 0){
-            InfoMessage(stringResource = currentInfoMessage)
-        }
-
+        InfoMessage(
+            isVisible = isInfoMessageShowing,
+            stringResource = currentInfoMessage
+        )
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun InfoMessage(@StringRes stringResource: Int) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color= MaterialTheme.colors.error,
-        elevation = 4.dp
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-
-        }
-        Text(
-            text = stringResource(id = stringResource),
-            modifier = Modifier.padding(16.dp),
-            color = MaterialTheme.colors.onError
+fun InfoMessage(
+    isVisible: Boolean,
+    @StringRes stringResource: Int
+) {
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = slideInVertically(
+            initialOffsetY = { fullHeight -> -fullHeight  },
+            animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
+        ),
+        exit = fadeOut(
+            targetAlpha = 0f,
+            animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing )
         )
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color= MaterialTheme.colors.error,
+            elevation = 4.dp
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+            }
+            Text(
+                text = stringResource(id = stringResource),
+                modifier = Modifier.padding(16.dp),
+                color = MaterialTheme.colors.onError
+            )
+        }
     }
 }
 
