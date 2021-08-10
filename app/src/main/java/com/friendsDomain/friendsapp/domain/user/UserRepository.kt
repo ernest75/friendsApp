@@ -1,6 +1,7 @@
 package com.friendsDomain.friendsapp.domain.user
 
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
+import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
 import com.friendsDomain.friendsapp.domain.exceptions.DuplicateAccountException
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
 
@@ -20,6 +21,8 @@ class UserRepository(
             SignUpState.DuplicateAccount
         } catch (backendError: BackendException) {
             SignUpState.BackEndError
+        } catch (connectionUnavailable: ConnectionUnavailableException){
+            SignUpState.Offline
         }
     }
 }
