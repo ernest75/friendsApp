@@ -31,15 +31,16 @@ fun SignUpScreen(
     var about by remember { mutableStateOf("") }
     var isBadEmail by remember { mutableStateOf(false)}
     var isBadPassword by remember { mutableStateOf(false)}
+    var currentInfoMessage by remember { mutableStateOf(0)}
     val signUpState by signUpViewModel.signUpState.observeAsState()
 
     when (signUpState) {
         is SignUpState.SignedUp -> onSignedUp()
         is SignUpState.BadEmail -> isBadEmail = true
         is SignUpState.BadPassword -> isBadPassword = true
-        is SignUpState.DuplicateAccount -> InfoMessage(R.string.duplicateAccountError)
-        is SignUpState.BackEndError -> InfoMessage(stringResource = R.string.createAccountError)
-        is SignUpState.Offline -> InfoMessage(stringResource = R.string.offLineError)
+        is SignUpState.DuplicateAccount -> currentInfoMessage = R.string.duplicateAccountError
+        is SignUpState.BackEndError -> currentInfoMessage = R.string.createAccountError
+        is SignUpState.Offline -> currentInfoMessage = R.string.offLineError
     }
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -73,6 +74,10 @@ fun SignUpScreen(
                 Text(text = stringResource(id = R.string.signUp))
             }
         }
+        if (currentInfoMessage != 0){
+            InfoMessage(stringResource = currentInfoMessage)
+        }
+
     }
 }
 
