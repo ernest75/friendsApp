@@ -79,12 +79,21 @@ fun SignUpScreen(
 @Composable
 fun InfoMessage(@StringRes stringResource: Int) {
     Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colors.secondaryVariant)
+        modifier = Modifier.fillMaxWidth(),
+        color= MaterialTheme.colors.error,
+        elevation = 4.dp
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
 
-        Text(text = stringResource(id = stringResource))
+        }
+        Text(
+            text = stringResource(id = stringResource),
+            modifier = Modifier.padding(16.dp),
+            color = MaterialTheme.colors.onError
+        )
     }
 }
 
