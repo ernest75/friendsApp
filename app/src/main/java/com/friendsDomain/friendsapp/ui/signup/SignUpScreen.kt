@@ -53,11 +53,20 @@ fun SignUpScreen(
             EmailField(
                 value = screenState.email,
                 isError = screenState.showBadEmail,
-                onValueChange = { screenState.email = it })
+                onValueChange = {
+                    if(screenState.isBadEmail){
+                        screenState.resetUiState()
+                    }
+                    screenState.email = it })
             PasswordField(
                 value = screenState.password,
                 isError = screenState.showBadPassword,
-                onValueChange = { screenState.password = it })
+                onValueChange = {
+                    if (screenState.isBadPassword) {
+                        screenState.resetUiState()
+                    }
+                    screenState.password = it
+                })
             AboutField(
                 value = screenState.about,
                 onValueChange = { screenState.about = it }
