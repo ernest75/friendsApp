@@ -19,6 +19,11 @@ class SignUpScreenState(
     var currentInfoMessage by mutableStateOf(0)
     var isInfoMessageShowing by mutableStateOf(false)
 
+    private var lastSubmittedEmail by mutableStateOf("")
+
+    val showBadEmail: Boolean
+        get() = isBadEmail && lastSubmittedEmail == email
+
     fun showToggleInfoMessage(@StringRes message: Int) = coroutineScope.launch {
         if(currentInfoMessage!= message){
             currentInfoMessage = message
@@ -33,6 +38,8 @@ class SignUpScreenState(
 
     fun resetUiState() {
         currentInfoMessage = 0
+        lastSubmittedEmail = email
         isInfoMessageShowing = false
+        isBadEmail = false
     }
 }

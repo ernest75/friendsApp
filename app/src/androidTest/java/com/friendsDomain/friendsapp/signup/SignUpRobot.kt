@@ -16,12 +16,12 @@ fun launchSignUpScreen(
 class SignUpRobot( private val rule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>) {
     fun typeEmail(email: String) {
         val emailHint = rule.activity.getString(R.string.email)
-        rule.onNodeWithText(emailHint).performTextInput(email)
+        rule.onNodeWithTag(emailHint).performTextInput(email)
     }
 
     fun typePassword(password: String) {
         val passwordHint = rule.activity.getString(R.string.password)
-        rule.onNodeWithText(passwordHint).performTextInput(password)
+        rule.onNodeWithTag(passwordHint).performTextInput(password)
     }
 
     fun submit() {
@@ -63,6 +63,11 @@ class SignUpVerification(
     fun badEmailErrorIsShown() {
         val badEmailError = rule.activity.getString(R.string.badEmailError)
         rule.onNodeWithText(badEmailError).assertIsDisplayed()
+    }
+
+    fun badEmailErrorIsNotShown() {
+        val badEmailError = rule.activity.getString(R.string.badEmailError)
+        rule.onNodeWithText(badEmailError).assertDoesNotExist()
     }
 
     fun badPasswordErrorIsShown() {

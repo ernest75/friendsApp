@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -46,11 +47,12 @@ fun SignUpScreen(
                 .padding(16.dp)
         ) {
             ScreenTitle(R.string.createAccount)
+
             Spacer(modifier = Modifier.height(16.dp))
 
             EmailField(
                 value = screenState.email,
-                isError = screenState.isBadEmail,
+                isError = screenState.showBadEmail,
                 onValueChange = { screenState.email = it })
             PasswordField(
                 value = screenState.password,
@@ -60,6 +62,7 @@ fun SignUpScreen(
                 value = screenState.about,
                 onValueChange = { screenState.about = it }
             )
+
             Spacer(modifier = Modifier.height(8.dp))
 
             Button(
@@ -138,7 +141,9 @@ private fun EmailField(
     isError: Boolean
 ) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag(stringResource(id = R.string.email)),
         value = value,
         isError = isError,
         label = {
@@ -159,7 +164,9 @@ private fun PasswordField(
     val visualTransformation =
         if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag(stringResource(id = R.string.password)),
         value = value,
         isError = isError,
         trailingIcon = {
