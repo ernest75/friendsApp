@@ -1,6 +1,7 @@
 package com.friendsDomain.friendsapp.signup
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
+import com.friendsDomain.friendsapp.app.TestDispatchers
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.domain.user.User
 import com.friendsDomain.friendsapp.domain.user.UserRepository
@@ -17,7 +18,8 @@ class CreateAnAccountTest {
     private val credentialsValidator = RegexCredentialsValidator()
     private val viewModel = SignUpViewModel(
         credentialsValidator,
-                UserRepository(InMemoryUserCatalog())
+                UserRepository(InMemoryUserCatalog()),
+                TestDispatchers()
             )
 
     @Test
@@ -45,7 +47,7 @@ class CreateAnAccountTest {
         val password = "AnnaPass12$$"
         val usersForPassword = mutableMapOf(password to mutableListOf(anna))
         val userRepository = UserRepository(InMemoryUserCatalog(usersForPassword))
-        val viewModel = SignUpViewModel(credentialsValidator, userRepository)
+        val viewModel = SignUpViewModel(credentialsValidator, userRepository, TestDispatchers())
 
         viewModel.createAccount(anna.email, password,anna.about)
 
