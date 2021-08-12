@@ -7,6 +7,7 @@ import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableExcep
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.domain.user.User
 import com.friendsDomain.friendsapp.domain.user.UserCatalog
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -86,7 +87,7 @@ class SignUpScreenTest {
     }
 
     @Test
-    fun displayDuplicateAccountError() {
+    fun displayDuplicateAccountError()= runBlocking<Unit> {
         val signedUpUserEmail = "alice@email.com"
         val signedUserPassword = "@l1cePass"
         replaceUserCatalogWith(InMemoryUserCatalog().apply {
@@ -103,7 +104,7 @@ class SignUpScreenTest {
     }
 
     @Test
-    fun displayBackEndError(){
+    fun displayBackEndError() = runBlocking<Unit> {
         replaceUserCatalogWith(UnavailableUserCatalog())
         launchSignUpScreen(signUpTestRule){
             typeEmail("joe@friends.com")
@@ -116,7 +117,7 @@ class SignUpScreenTest {
     }
 
     @Test
-    fun displayOfflineError() {
+    fun displayOfflineError() = runBlocking<Unit> {
         replaceUserCatalogWith(OfflineUserCatalog())
 
         launchSignUpScreen(signUpTestRule) {
@@ -143,14 +144,14 @@ class SignUpScreenTest {
 
     class UnavailableUserCatalog : UserCatalog {
 
-        override fun createUser(email: String, password: String, about: String): User {
+        override suspend fun createUser(email: String, password: String, about: String): User {
             throw BackendException()
         }
 
     }
 
     class OfflineUserCatalog : UserCatalog {
-        override fun createUser(email: String, password: String, about: String): User {
+        override suspend fun createUser(email: String, password: String, about: String): User {
             throw ConnectionUnavailableException()
         }
 
