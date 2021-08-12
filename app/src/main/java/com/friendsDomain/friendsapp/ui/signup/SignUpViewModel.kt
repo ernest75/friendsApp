@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.friendsDomain.friendsapp.app.CoroutineDispatchers
-import com.friendsDomain.friendsapp.app.TestDispatchers
 import com.friendsDomain.friendsapp.domain.user.UserRepository
 import com.friendsDomain.friendsapp.domain.validation.CredentialsValidationResult
 import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator

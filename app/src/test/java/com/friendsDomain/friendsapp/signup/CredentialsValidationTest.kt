@@ -51,7 +51,8 @@ class CredentialsValidationTest {
         val viewModel = SignUpViewModel(
             RegexCredentialsValidator(),
             UserRepository(InMemoryUserCatalog()),
-            TestDispatchers())
+            TestDispatchers()
+        )
 
         viewModel.createAccount("ernest@friemds.com", password,":about:")
 
