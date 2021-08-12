@@ -47,7 +47,7 @@ android {
     }
 
     testOptions.unitTests.all {
-        //useJUnitPlatform()
+        useJUnitPlatform()
         testLogging {
             events 'passed', 'failed', 'skipped', 'standardOut', 'standardError'
         }
@@ -80,6 +80,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.7.2"
     testImplementation "org.junit.vintage:junit-vintage-engine:5.7.2"
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1")
 
     androidTestImplementation ("androidx.compose.ui:ui-test-junit4:$composeVersion")
 

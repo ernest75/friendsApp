@@ -30,6 +30,5 @@ class RenderingSignupStatesTest {
             listOf(SignUpState.Loading, SignUpState.SignedUp(tom)),
             deliveredStates
         )
-
     }
 }

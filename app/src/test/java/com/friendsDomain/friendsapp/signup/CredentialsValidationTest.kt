@@ -24,7 +24,6 @@ class CredentialsValidationTest {
         "'ab@bc.c'",
         "''",
         "'   '",
-
     )
     fun invalidEmail(email: String) {
         val viewModel = SignUpViewModel(RegexCredentialsValidator(),

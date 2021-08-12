@@ -3,10 +3,14 @@ package com.friendsDomain.friendsapp.ui.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.friendsDomain.friendsapp.domain.user.UserRepository
 import com.friendsDomain.friendsapp.domain.validation.CredentialsValidationResult
 import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignUpViewModel(
     private val credentialsValidator: RegexCredentialsValidator,
@@ -31,13 +35,23 @@ class SignUpViewModel(
         }
     }
 
+    class TestDispatchers{
+        val background = Dispatchers.Unconfined
+    }
+
+    private val dispatchers = TestDispatchers()
+
     private fun proceedWithSignedUp(
         email: String,
         password: String,
         about: String
     ) {
-        mutableSignUpState.value = SignUpState.Loading
-        mutableSignUpState.value = userRepository.signUp(email, password, about)
+        viewModelScope.launch {
+            mutableSignUpState.value = SignUpState.Loading
+            mutableSignUpState.value = withContext(dispatchers.background) {
+                userRepository.signUp(email, password, about)
+            }
+        }
     }
 
 }
