@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.friendsDomain.friendsapp.app.CoroutineDispatchers
 import com.friendsDomain.friendsapp.app.TestDispatchers
 import com.friendsDomain.friendsapp.domain.user.UserRepository
 import com.friendsDomain.friendsapp.domain.validation.CredentialsValidationResult
@@ -15,7 +16,7 @@ import kotlinx.coroutines.withContext
 class SignUpViewModel(
     private val credentialsValidator: RegexCredentialsValidator,
     private val userRepository: UserRepository,
-    private val dispatchers: TestDispatchers
+    private val dispatchers: CoroutineDispatchers
 ): ViewModel() {
 
     private val mutableSignUpState = MutableLiveData<SignUpState>()
