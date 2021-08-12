@@ -15,11 +15,12 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantTaskExecutorExtension::class)
 class RenderingSignupStatesTest {
 
+    private val userRepository = UserRepository(InMemoryUserCatalog())
+    private val viewModel = SignUpViewModel(RegexCredentialsValidator(), userRepository)
+    private val tom = User("tomId", "tom@friends.com", "about Tom")
+
     @Test
     fun uiStatesAreDeliveredInParticularOrder() {
-        val userRepository = UserRepository(InMemoryUserCatalog())
-        val viewModel = SignUpViewModel(RegexCredentialsValidator(), userRepository)
-        val tom = User("tomId", "tom@friends.com", "about Tom")
         val deliveredStates = mutableListOf<SignUpState>()
         viewModel.signUpState.observeForever { deliveredStates.add(it) }
 
