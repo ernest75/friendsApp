@@ -4,6 +4,8 @@ import com.friendsDomain.friendsapp.domain.user.User
 
 sealed class SignUpState {
 
+    object Loading: SignUpState()
+
     data class SignedUp(val user: User): SignUpState()
 
     object BadEmail: SignUpState()
