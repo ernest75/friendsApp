@@ -47,7 +47,7 @@ android {
     }
 
     testOptions.unitTests.all {
-        useJUnitPlatform()
+        //useJUnitPlatform()
         testLogging {
             events 'passed', 'failed', 'skipped', 'standardOut', 'standardError'
         }
@@ -83,4 +83,6 @@ dependencies {
 
     androidTestImplementation ("androidx.compose.ui:ui-test-junit4:$composeVersion")
 
+    testImplementation ("org.junit.platform:junit-platform-suite-api:1.7.2")
+    testImplementation ("org.junit.platform:junit-platform-runner:1.7.2")
 }
