@@ -80,4 +80,9 @@ class SignUpVerification(
         rule.onNodeWithText(badPasswordError).assertDoesNotExist()
     }
 
+    fun blockingLoadingIsShown() {
+        val loading = rule.activity.getString(R.string.loading)
+        rule.onNodeWithTag(loading).assertIsDisplayed()
+    }
+
 }
