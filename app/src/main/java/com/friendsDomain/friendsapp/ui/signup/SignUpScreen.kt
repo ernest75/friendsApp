@@ -3,6 +3,7 @@ package com.friendsDomain.friendsapp.ui.signup
 import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -84,22 +85,35 @@ fun SignUpScreen(
             isVisible = screenState.isInfoMessageShowing,
             stringResource = screenState.currentInfoMessage
         )
-        if (screenState.isLoading){
-            BlockingLoading()
-        }
+        BlockingLoading(screenState.isLoading)
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun BlockingLoading() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .testTag(stringResource(id = R.string.loading))
-            .background(MaterialTheme.colors.surface.copy(alpha = 0.7f)),
-        contentAlignment = Alignment.Center
-    ){
-        CircularProgressIndicator()
+fun BlockingLoading(
+    isShowing: Boolean
+) {
+    AnimatedVisibility(
+        visible = isShowing,
+        enter = fadeIn(
+            initialAlpha = 0f,
+            animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
+        ),
+        exit = fadeOut(
+            targetAlpha = 0f,
+            animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing)
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag(stringResource(id = R.string.loading))
+                .background(MaterialTheme.colors.surface.copy(alpha = 0.7f)),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
     }
 }
 
