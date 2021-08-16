@@ -17,6 +17,16 @@ class InMemoryUserCatalog(private val usersForPassword: MutableMap<String, Mutab
         return user
     }
 
+    fun followedBy(userId: String): List<String> {
+        val followings = listOf(
+            Following("saraId", "lucyId"),
+            Following("annaId", "lucyId")
+        )
+        return followings
+            .filter { it.userId == userId }
+            .map { it.followedId }
+    }
+
     private fun checkAccountExists(email: String) {
         if (usersForPassword.values.flatten().any { it.email == email }) {
             throw DuplicateAccountException()
