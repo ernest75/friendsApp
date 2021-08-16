@@ -2,7 +2,7 @@ package com.friendsDomain.friendsapp.timeline
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
 import com.friendsDomain.friendsapp.domain.post.Post
-import com.friendsDomain.friendsapp.infrastructure.builder.UserBuilder
+import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.infrastructure.builder.UserBuilder.Companion.aUser
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
 import org.junit.jupiter.api.Assertions.*
@@ -14,7 +14,7 @@ class LoadPostsTest {
 
     @Test
     fun noPostsAvailable() {
-        val viewModel = TimeLineViewModel()
+        val viewModel = TimeLineViewModel(InMemoryUserCatalog())
 
         viewModel.timelineFor("ernestId")
 
@@ -28,7 +28,7 @@ class LoadPostsTest {
     fun postAvailable() {
         val tim = aUser().withId("timId").build()
         val timPosts = listOf(Post("postId",tim.id,"post text",1L))
-        val viewModel = TimeLineViewModel()
+        val viewModel = TimeLineViewModel(InMemoryUserCatalog())
 
         viewModel.timelineFor(tim.id)
 
@@ -41,7 +41,7 @@ class LoadPostsTest {
         val anna = aUser().withId("annaId").build()
         val lucy = aUser().withId("lucyId").build()
 
-        val viewModel = TimeLineViewModel()
+        val viewModel = TimeLineViewModel(InMemoryUserCatalog())
         viewModel.timelineFor(anna.id)
         val lucyPosts = listOf(
             Post("post2", lucy.id, "post 2", 2L),
@@ -65,7 +65,7 @@ class LoadPostsTest {
             Post("post3",sara.id,"post 3",3L)
         )
 
-        val viewModel = TimeLineViewModel()
+        val viewModel = TimeLineViewModel(InMemoryUserCatalog())
 
         viewModel.timelineFor(sara.id)
 
