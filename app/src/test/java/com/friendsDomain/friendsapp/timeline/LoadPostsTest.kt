@@ -3,6 +3,7 @@ package com.friendsDomain.friendsapp.timeline
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
+import com.friendsDomain.friendsapp.domain.user.Following
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.infrastructure.builder.UserBuilder.Companion.aUser
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
@@ -60,15 +61,21 @@ class LoadPostsTest {
         val anna = aUser().withId("annaId").build()
         val lucy = aUser().withId("lucyId").build()
 
-        val viewModel = TimeLineViewModel(InMemoryUserCatalog(), InMemoryPostCatalog(
-            listOf(
-                Post("postId", "timId", "post text", 1L),
-                Post("post2", "lucyId", "post 2", 2L),
-                Post("post1", "lucyId", "post 1", 1L),
-                Post("post4", "saraId", "post 4", 4L),
-                Post("post3", "saraId", "post 3", 3L)
+        val viewModel = TimeLineViewModel(
+            InMemoryUserCatalog(
+                followings = listOf(
+                    Following(anna.id,lucy.id)
+                )
+            ),
+            InMemoryPostCatalog(
+                listOf(
+                    Post("postId", "timId", "post text", 1L),
+                    Post("post2", "lucyId", "post 2", 2L),
+                    Post("post1", "lucyId", "post 1", 1L),
+                    Post("post4", "saraId", "post 4", 4L),
+                    Post("post3", "saraId", "post 3", 3L)
+                )
             )
-        )
         )
         viewModel.timelineFor(anna.id)
         val lucyPosts = listOf(
@@ -93,7 +100,13 @@ class LoadPostsTest {
             Post("post3",sara.id,"post 3",3L)
         )
 
-        val viewModel = TimeLineViewModel(InMemoryUserCatalog(), InMemoryPostCatalog(
+        val viewModel = TimeLineViewModel(
+            InMemoryUserCatalog(
+                followings = listOf(
+                    Following(sara.id,lucy.id)
+                )
+            ),
+            InMemoryPostCatalog(
             listOf(
                 Post("postId", "timId", "post text", 1L),
                 Post("post2", "lucyId", "post 2", 2L),

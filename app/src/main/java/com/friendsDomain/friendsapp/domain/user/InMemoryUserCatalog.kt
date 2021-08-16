@@ -2,7 +2,9 @@ package com.friendsDomain.friendsapp.domain.user
 
 import com.friendsDomain.friendsapp.domain.exceptions.DuplicateAccountException
 
-class InMemoryUserCatalog(private val usersForPassword: MutableMap<String, MutableList<User>> = mutableMapOf()
+class InMemoryUserCatalog(
+    private val usersForPassword: MutableMap<String, MutableList<User>> = mutableMapOf(),
+    private val followings: List<Following> = mutableListOf()
 ) : UserCatalog {
 
     override suspend fun createUser(
@@ -18,10 +20,6 @@ class InMemoryUserCatalog(private val usersForPassword: MutableMap<String, Mutab
     }
 
     fun followedBy(userId: String): List<String> {
-        val followings = listOf(
-            Following("saraId", "lucyId"),
-            Following("annaId", "lucyId")
-        )
         return followings
             .filter { it.userId == userId }
             .map { it.followedId }
