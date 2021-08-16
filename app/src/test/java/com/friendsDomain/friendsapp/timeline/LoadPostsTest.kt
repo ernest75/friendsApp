@@ -2,9 +2,9 @@ package com.friendsDomain.friendsapp.timeline
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
 import com.friendsDomain.friendsapp.domain.post.Post
-import com.friendsDomain.friendsapp.domain.user.User
+import com.friendsDomain.friendsapp.infrastructure.builder.UserBuilder
+import com.friendsDomain.friendsapp.infrastructure.builder.UserBuilder.Companion.aUser
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,10 +23,10 @@ class LoadPostsTest {
             ,viewModel.timelineState.value
         )
     }
-    
+
     @Test
     fun postAvailable() {
-        val tim = User("timId","tim@friends.com","about Tim")
+        val tim = aUser().withId("timId").build()
         val timPosts = listOf(Post("postId",tim.id,"post text",1L))
         val viewModel = TimeLineViewModel()
 
