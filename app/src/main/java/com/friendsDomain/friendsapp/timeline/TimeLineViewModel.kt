@@ -6,7 +6,10 @@ import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
 
-class TimeLineViewModel(private val userCatalog: InMemoryUserCatalog) {
+class TimeLineViewModel(
+    private val userCatalog: InMemoryUserCatalog,
+    private val postCatalog: InMemoryPostCatalog
+) {
     private val mutableTimelineState: MutableLiveData<TimelineState> =
         MutableLiveData<TimelineState>()
 
@@ -14,7 +17,7 @@ class TimeLineViewModel(private val userCatalog: InMemoryUserCatalog) {
 
     fun timelineFor(userId: String) {
         val userIds = listOf(userId) + userCatalog.followedBy(userId)
-        val postsForUser = InMemoryPostCatalog().postsFor(userIds)
+        val postsForUser = postCatalog.postsFor(userIds)
         mutableTimelineState.value = TimelineState.Posts(postsForUser)
     }
 
