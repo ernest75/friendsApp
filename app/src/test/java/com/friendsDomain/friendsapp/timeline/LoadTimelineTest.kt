@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantTaskExecutorExtension::class)
-class LoadPostsTest {
+class LoadTimelineTest {
 
     private val lucy = aUser().withId("lucyId").build()
     private val sara = aUser().withId("saraId").build()
