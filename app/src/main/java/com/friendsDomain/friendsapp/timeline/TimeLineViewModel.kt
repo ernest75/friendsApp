@@ -2,6 +2,7 @@ package com.friendsDomain.friendsapp.timeline
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.friendsDomain.friendsapp.domain.exceptions.BackendException
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
@@ -18,9 +19,13 @@ class TimeLineViewModel(
     val timelineState: LiveData<TimelineState> = mutableTimelineState
 
     fun timelineFor(userId: String) {
-        val userIds = listOf(userId) + userCatalog.followedBy(userId)
-        val postsForUser = postCatalog.postsFor(userIds)
-        mutableTimelineState.value = TimelineState.Posts(postsForUser)
+        try {
+            val userIds = listOf(userId) + userCatalog.followedBy(userId)
+            val postsForUser = postCatalog.postsFor(userIds)
+            mutableTimelineState.value = TimelineState.Posts(postsForUser)
+        } catch (backendException: BackendException) {
+            mutableTimelineState.value = TimelineState.BackendError
+        }
     }
 
 }
