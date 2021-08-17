@@ -3,12 +3,11 @@ package com.friendsDomain.friendsapp.timeline
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
 import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
-import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
+import com.friendsDomain.friendsapp.domain.timeline.TimelineRepository
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -19,8 +18,10 @@ class FailTimeLineLoadingTest {
     @Test
     fun backendError() {
         val userCatalog = InMemoryUserCatalog()
-        val postCatalog = UnavailablePostCatalog(emptyList())
-        val viewModel = TimeLineViewModel(userCatalog, postCatalog)
+        val postCatalog = UnavailablePostCatalog()
+        val viewModel = TimeLineViewModel(
+            TimelineRepository(userCatalog, postCatalog)
+        )
 
         viewModel.timelineFor(":irrelevant:")
 
@@ -31,14 +32,16 @@ class FailTimeLineLoadingTest {
     fun offlineError() {
         val userCatalog = InMemoryUserCatalog()
         val postCatalog = OfflinePostCatalog()
-        val viewModel = TimeLineViewModel(userCatalog,postCatalog)
+        val viewModel = TimeLineViewModel(
+            TimelineRepository(userCatalog, postCatalog)
+        )
 
         viewModel.timelineFor(":irrelevant:")
 
         assertEquals(TimelineState.OfflineError,viewModel.timelineState.value )
     }
 
-    private class UnavailablePostCatalog(emptyList: List<Post>) :
+    private class UnavailablePostCatalog() :
         PostCatalog {
         override fun postsFor(userIds: List<String>): List<Post> {
             throw BackendException()

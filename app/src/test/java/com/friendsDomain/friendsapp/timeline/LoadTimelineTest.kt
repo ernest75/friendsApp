@@ -3,6 +3,7 @@ package com.friendsDomain.friendsapp.timeline
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
+import com.friendsDomain.friendsapp.domain.timeline.TimelineRepository
 import com.friendsDomain.friendsapp.domain.user.Following
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.infrastructure.builder.UserBuilder.Companion.aUser
@@ -35,8 +36,10 @@ class LoadTimelineTest {
 
     @Test
     fun noPostsAvailable() {
+        val userCatalog = InMemoryUserCatalog()
+        val postCatalog = InMemoryPostCatalog(availablePosts)
         val viewModel = TimeLineViewModel(
-            InMemoryUserCatalog(), InMemoryPostCatalog(availablePosts)
+            TimelineRepository(userCatalog, postCatalog)
         )
 
         viewModel.timelineFor("ernestId")
@@ -48,9 +51,10 @@ class LoadTimelineTest {
 
     @Test
     fun postAvailable() {
+        val userCatalog = InMemoryUserCatalog()
+        val postCatalog = InMemoryPostCatalog(availablePosts)
         val viewModel = TimeLineViewModel(
-            InMemoryUserCatalog(),
-            InMemoryPostCatalog(availablePosts)
+            TimelineRepository(userCatalog, postCatalog)
         )
 
         viewModel.timelineFor(tim.id)
@@ -63,13 +67,14 @@ class LoadTimelineTest {
 
     @Test
     fun postsFromFriends() {
+        val userCatalog = InMemoryUserCatalog(
+            followings = listOf(
+                Following(anna.id, lucy.id)
+            )
+        )
+        val postCatalog = InMemoryPostCatalog(availablePosts)
         val viewModel = TimeLineViewModel(
-            InMemoryUserCatalog(
-                followings = listOf(
-                    Following(anna.id, lucy.id)
-                )
-            ),
-            InMemoryPostCatalog(availablePosts)
+            TimelineRepository(userCatalog, postCatalog)
         )
         viewModel.timelineFor(anna.id)
 
@@ -81,13 +86,14 @@ class LoadTimelineTest {
 
     @Test
     fun postFromFriendsAlongOwn() {
+        val userCatalog = InMemoryUserCatalog(
+            followings = listOf(
+                Following(sara.id, lucy.id)
+            )
+        )
+        val postCatalog = InMemoryPostCatalog(availablePosts)
         val viewModel = TimeLineViewModel(
-            InMemoryUserCatalog(
-                followings = listOf(
-                    Following(sara.id, lucy.id)
-                )
-            ),
-            InMemoryPostCatalog(availablePosts)
+            TimelineRepository(userCatalog, postCatalog)
         )
 
         viewModel.timelineFor(sara.id)
