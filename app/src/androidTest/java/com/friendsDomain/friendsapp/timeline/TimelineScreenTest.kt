@@ -1,13 +1,11 @@
 package com.friendsDomain.friendsapp.timeline
 
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.friendsDomain.friendsapp.MainActivity
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
-import com.friendsDomain.friendsapp.timeline.state.TimelineState
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.koin.core.context.loadKoinModules
@@ -37,16 +35,24 @@ class TimelineScreenTest {
         val post1 = Post("post1","bobId","Bob's first post",1L)
         val post2 = Post("post2","bobId","Bob's second post",2L)
 
-        val postCatalog = InMemoryPostCatalog(listOf(post1, post2))
-        val replaceModule = module {
-            factory<PostCatalog> { postCatalog }
-        }
-        loadKoinModules(replaceModule)
+        replacePostCatalogWith(InMemoryPostCatalog(listOf(post1, post2)))
 
         launchTimelineFor(email, password, timelineTestRule){
 
         }verify{
             postsAreDisplayed(post1,post2)
         }
+    }
+
+    @After
+    fun tearDown(){
+        replacePostCatalogWith(InMemoryPostCatalog())
+    }
+
+    private fun replacePostCatalogWith(postCatalog: PostCatalog) {
+        val replaceModule = module {
+            factory<PostCatalog> { postCatalog }
+        }
+        loadKoinModules(replaceModule)
     }
 }
