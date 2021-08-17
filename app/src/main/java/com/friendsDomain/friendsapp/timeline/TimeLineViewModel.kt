@@ -3,13 +3,14 @@ package com.friendsDomain.friendsapp.timeline
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
+import com.friendsDomain.friendsapp.domain.post.PostCatalog
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.domain.user.UserCatalog
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
 
 class TimeLineViewModel(
     private val userCatalog: UserCatalog,
-    private val postCatalog: InMemoryPostCatalog
+    private val postCatalog: PostCatalog
 ) {
     private val mutableTimelineState: MutableLiveData<TimelineState> =
         MutableLiveData<TimelineState>()
