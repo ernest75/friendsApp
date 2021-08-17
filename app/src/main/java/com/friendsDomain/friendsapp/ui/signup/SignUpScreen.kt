@@ -9,7 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
+import com.friendsDomain.friendsapp.ui.composables.ScreenTitle
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpScreenState
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
 
@@ -151,19 +151,6 @@ fun InfoMessage(
                 color = MaterialTheme.colors.onError
             )
         }
-    }
-}
-
-@Composable
-private fun ScreenTitle(@StringRes resource: Int) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(resource),
-            style = typography.h4
-        )
     }
 }
 
