@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
 import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
-import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
-import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
+import com.friendsDomain.friendsapp.domain.timeline.TimelineRepository
 import com.friendsDomain.friendsapp.domain.user.UserCatalog
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
 
@@ -20,19 +19,8 @@ class TimeLineViewModel(
     val timelineState: LiveData<TimelineState> = mutableTimelineState
 
     fun timelineFor(userId: String) {
-        val result = getTimelineFor(userId)
+        val result = TimelineRepository(userCatalog,postCatalog)
+            .getTimelineFor(userId)
         mutableTimelineState.value = result
-    }
-
-    private fun getTimelineFor(userId: String): TimelineState {
-        return try {
-            val userIds = listOf(userId) + userCatalog.followedBy(userId)
-            val postsForUser = postCatalog.postsFor(userIds)
-            TimelineState.Posts(postsForUser)
-        } catch (backendException: BackendException) {
-            TimelineState.BackendError
-        } catch (noConnectionException: ConnectionUnavailableException) {
-            TimelineState.OfflineError
-        }
     }
 }
