@@ -38,7 +38,7 @@ class LoadTimelineTest {
     fun noPostsAvailable() {
         val userCatalog = InMemoryUserCatalog()
         val postCatalog = InMemoryPostCatalog(availablePosts)
-        val viewModel = TimeLineViewModel(
+        val viewModel = TimelineViewModel(
             TimelineRepository(userCatalog, postCatalog)
         )
 
@@ -53,7 +53,7 @@ class LoadTimelineTest {
     fun postAvailable() {
         val userCatalog = InMemoryUserCatalog()
         val postCatalog = InMemoryPostCatalog(availablePosts)
-        val viewModel = TimeLineViewModel(
+        val viewModel = TimelineViewModel(
             TimelineRepository(userCatalog, postCatalog)
         )
 
@@ -73,7 +73,7 @@ class LoadTimelineTest {
             )
         )
         val postCatalog = InMemoryPostCatalog(availablePosts)
-        val viewModel = TimeLineViewModel(
+        val viewModel = TimelineViewModel(
             TimelineRepository(userCatalog, postCatalog)
         )
         viewModel.timelineFor(anna.id)
@@ -92,7 +92,7 @@ class LoadTimelineTest {
             )
         )
         val postCatalog = InMemoryPostCatalog(availablePosts)
-        val viewModel = TimeLineViewModel(
+        val viewModel = TimelineViewModel(
             TimelineRepository(userCatalog, postCatalog)
         )
 

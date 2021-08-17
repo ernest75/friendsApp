@@ -19,7 +19,7 @@ class FailTimeLineLoadingTest {
     fun backendError() {
         val userCatalog = InMemoryUserCatalog()
         val postCatalog = UnavailablePostCatalog()
-        val viewModel = TimeLineViewModel(
+        val viewModel = TimelineViewModel(
             TimelineRepository(userCatalog, postCatalog)
         )
 
@@ -32,7 +32,7 @@ class FailTimeLineLoadingTest {
     fun offlineError() {
         val userCatalog = InMemoryUserCatalog()
         val postCatalog = OfflinePostCatalog()
-        val viewModel = TimeLineViewModel(
+        val viewModel = TimelineViewModel(
             TimelineRepository(userCatalog, postCatalog)
         )
 
