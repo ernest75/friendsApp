@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.friendsDomain.friendsapp.ui.signup.SignUpScreen
 import com.friendsDomain.friendsapp.ui.signup.SignUpViewModel
 import com.friendsDomain.friendsapp.ui.theme.FriendsAppTheme
-import com.friendsDomain.friendsapp.ui.timeline.Timeline
+import com.friendsDomain.friendsapp.ui.timeline.TimelineScreen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                             SignUpScreen(signUpViewModel) { navController.navigate(TIME_LINE) }
                         }
                         composable(TIME_LINE){
-                            Timeline()
+                            TimelineScreen()
                         }
                     }
                 }

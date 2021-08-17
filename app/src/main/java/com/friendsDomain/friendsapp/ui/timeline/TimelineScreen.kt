@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
 
 @Composable
-fun Timeline() {
+fun TimelineScreen() {
 
     Column(
         modifier = Modifier
