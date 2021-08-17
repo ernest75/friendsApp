@@ -3,6 +3,7 @@ package com.friendsDomain.friendsapp.timeline
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
+import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
@@ -25,6 +26,8 @@ class TimeLineViewModel(
             mutableTimelineState.value = TimelineState.Posts(postsForUser)
         } catch (backendException: BackendException) {
             mutableTimelineState.value = TimelineState.BackendError
+        } catch (noConnectionException : ConnectionUnavailableException){
+            mutableTimelineState.value = TimelineState.OfflineError
         }
     }
 

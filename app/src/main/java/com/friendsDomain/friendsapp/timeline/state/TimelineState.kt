@@ -8,4 +8,6 @@ sealed class TimelineState {
 
     object BackendError: TimelineState()
 
+    object OfflineError: TimelineState()
+
 }

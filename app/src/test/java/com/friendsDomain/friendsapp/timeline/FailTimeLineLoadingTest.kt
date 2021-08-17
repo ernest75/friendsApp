@@ -2,6 +2,7 @@ package com.friendsDomain.friendsapp.timeline
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
+import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
@@ -26,6 +27,17 @@ class FailTimeLineLoadingTest {
         assertEquals(TimelineState.BackendError,viewModel.timelineState.value )
     }
 
+    @Test
+    fun offlineError() {
+        val userCatalog = InMemoryUserCatalog()
+        val postCatalog = OfflinePostCatalog()
+        val viewModel = TimeLineViewModel(userCatalog,postCatalog)
+
+        viewModel.timelineFor(":irrelevant:")
+
+        assertEquals(TimelineState.OfflineError,viewModel.timelineState.value )
+    }
+
     private class UnavailablePostCatalog(emptyList: List<Post>) :
         PostCatalog {
         override fun postsFor(userIds: List<String>): List<Post> {
@@ -33,4 +45,12 @@ class FailTimeLineLoadingTest {
         }
 
     }
+
+    private class OfflinePostCatalog : PostCatalog {
+        override fun postsFor(userIds: List<String>): List<Post> {
+            throw ConnectionUnavailableException()
+        }
+
+    }
+
 }
