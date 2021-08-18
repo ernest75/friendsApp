@@ -39,8 +39,17 @@ class TimelineScreenTest {
 
         launchTimelineFor(email, password, timelineTestRule){
 
-        }verify{
+        } verify {
             postsAreDisplayed(post1,post2)
+        }
+    }
+
+    @Test
+    fun opensPostComposer(){
+        launchTimelineFor("test@friends.com","Passw0rd!!",timelineTestRule){
+            tapOnCreateNewPost()
+        } verify {
+            newPostComposerIsDisplayed()
         }
     }
 
