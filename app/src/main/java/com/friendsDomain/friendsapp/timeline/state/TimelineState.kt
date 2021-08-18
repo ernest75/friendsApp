@@ -10,4 +10,6 @@ sealed class TimelineState {
 
     object OfflineError: TimelineState()
 
+    object Loading: TimelineState()
+
 }
