@@ -21,8 +21,9 @@ class TimelineViewModel(
     fun timelineFor(userId: String) {
         viewModelScope.launch {
             mutableTimelineState.value = TimelineState.Loading
-            val result = timelineRepository.getTimelineFor(userId)
-            mutableTimelineState.value = result
+            mutableTimelineState.value = with(dispatchers.background) {
+                timelineRepository.getTimelineFor(userId)
+            }
         }
     }
 }
