@@ -13,15 +13,14 @@ import java.sql.Time
 
 @ExtendWith(InstantTaskExecutorExtension::class)
 class RenderingTimelineStatesTest {
-
+    val timelineRepository = TimelineRepository(
+        InMemoryUserCatalog(),
+        InMemoryPostCatalog()
+    )
+    val viewModel = TimelineViewModel(timelineRepository)
     @Test
     fun timelineStatesExposedToAnObserver() {
         val renderedStates = mutableListOf<TimelineState>()
-        val timelineRepository = TimelineRepository(
-            InMemoryUserCatalog(),
-            InMemoryPostCatalog()
-        )
-        val viewModel = TimelineViewModel(timelineRepository)
         viewModel.timelineState.observeForever{ renderedStates.add(it)}
 
         viewModel.timelineFor(":irrelevantId:")
