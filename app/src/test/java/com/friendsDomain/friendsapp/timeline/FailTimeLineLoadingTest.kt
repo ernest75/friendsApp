@@ -43,14 +43,14 @@ class FailTimeLineLoadingTest {
 
     private class UnavailablePostCatalog() :
         PostCatalog {
-        override fun postsFor(userIds: List<String>): List<Post> {
+        override suspend fun postsFor(userIds: List<String>): List<Post> {
             throw BackendException()
         }
 
     }
 
     private class OfflinePostCatalog : PostCatalog {
-        override fun postsFor(userIds: List<String>): List<Post> {
+        override suspend fun postsFor(userIds: List<String>): List<Post> {
             throw ConnectionUnavailableException()
         }
 

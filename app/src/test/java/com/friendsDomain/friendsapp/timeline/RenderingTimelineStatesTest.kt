@@ -18,6 +18,7 @@ class RenderingTimelineStatesTest {
         InMemoryPostCatalog()
     )
     val viewModel = TimelineViewModel(timelineRepository)
+
     @Test
     fun timelineStatesExposedToAnObserver() {
         val renderedStates = mutableListOf<TimelineState>()
