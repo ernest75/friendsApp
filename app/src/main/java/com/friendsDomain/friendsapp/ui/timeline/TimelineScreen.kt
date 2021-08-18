@@ -27,7 +27,7 @@ import com.friendsDomain.friendsapp.timeline.TimelineViewModel
 import com.friendsDomain.friendsapp.timeline.state.TimelineState.*
 import com.friendsDomain.friendsapp.ui.composables.ScreenTitle
 
-class TimelineScreenState{
+class TimelineScreenState {
     var posts by mutableStateOf(emptyList<Post>())
 
     fun updatePosts(newPosts: List<Post>) {
@@ -42,22 +42,22 @@ fun TimelineScreen(
     timelineViewModel: TimelineViewModel,
     onCreateNewPost: () -> Unit
 ) {
-    val screenState by remember { mutableStateOf(TimelineScreenState())}
+    val screenState by remember { mutableStateOf(TimelineScreenState()) }
     val timelineState by timelineViewModel.timelineState.observeAsState()
     timelineViewModel.timelineFor(userId)
 
-    if (timelineState is Posts){
+    if (timelineState is Posts) {
         val posts = (timelineState as Posts).posts
         screenState.updatePosts(posts)
     }
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            ){
+    ) {
         ScreenTitle(resource = R.string.timeline)
         Spacer(modifier = Modifier.height(16.dp))
-        Box (modifier= Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             PostsList(
                 posts = screenState.posts,
                 modifier = Modifier.align(Alignment.TopCenter)
@@ -83,14 +83,14 @@ private fun PostsList(
     posts: List<Post>,
     modifier: Modifier
 ) {
-    if (posts.isEmpty()){
+    if (posts.isEmpty()) {
         Text(
             text = stringResource(id = R.string.emptyTimelineMessage),
             modifier = modifier
         )
     } else {
-        LazyColumn (modifier = Modifier.fillMaxSize()){
-            items(posts){ post ->
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(posts) { post ->
                 PostItem(post)
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -103,15 +103,16 @@ fun PostItem(
     post: Post,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier
-        .clip(shape = RoundedCornerShape(16.dp))
-        .fillMaxWidth()
-        .border(
-            width = 1.dp,
-            color = MaterialTheme.colors.onSurface,
-            shape = RoundedCornerShape(16.dp)
-        )
-    ){
+    Box(
+        modifier = modifier
+            .clip(shape = RoundedCornerShape(16.dp))
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colors.onSurface,
+                shape = RoundedCornerShape(16.dp)
+            )
+    ) {
         Text(
             text = post.postText,
             modifier = Modifier.padding(16.dp)
