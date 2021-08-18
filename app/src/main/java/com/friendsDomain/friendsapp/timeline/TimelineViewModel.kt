@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.friendsDomain.friendsapp.app.CoroutineDispatchers
 import com.friendsDomain.friendsapp.domain.timeline.TimelineRepository
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
 import kotlinx.coroutines.launch
 
 class TimelineViewModel(
-    private val timelineRepository: TimelineRepository
+    private val timelineRepository: TimelineRepository,
+    private val dispatchers: CoroutineDispatchers
 ): ViewModel() {
     private val mutableTimelineState: MutableLiveData<TimelineState> =
         MutableLiveData<TimelineState>()
@@ -19,8 +21,7 @@ class TimelineViewModel(
     fun timelineFor(userId: String) {
         viewModelScope.launch {
             mutableTimelineState.value = TimelineState.Loading
-            val result = timelineRepository
-                .getTimelineFor(userId)
+            val result = timelineRepository.getTimelineFor(userId)
             mutableTimelineState.value = result
         }
     }

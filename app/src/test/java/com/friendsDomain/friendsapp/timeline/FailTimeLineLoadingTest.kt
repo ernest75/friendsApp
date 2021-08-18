@@ -1,6 +1,8 @@
 package com.friendsDomain.friendsapp.timeline
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
+import com.friendsDomain.friendsapp.app.DefaultDispatchers
+import com.friendsDomain.friendsapp.app.TestDispatchers
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
 import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
 import com.friendsDomain.friendsapp.domain.post.Post
@@ -20,7 +22,8 @@ class FailTimeLineLoadingTest {
         val userCatalog = InMemoryUserCatalog()
         val postCatalog = UnavailablePostCatalog()
         val viewModel = TimelineViewModel(
-            TimelineRepository(userCatalog, postCatalog)
+            TimelineRepository(userCatalog, postCatalog),
+            TestDispatchers()
         )
 
         viewModel.timelineFor(":irrelevant:")
@@ -33,7 +36,8 @@ class FailTimeLineLoadingTest {
         val userCatalog = InMemoryUserCatalog()
         val postCatalog = OfflinePostCatalog()
         val viewModel = TimelineViewModel(
-            TimelineRepository(userCatalog, postCatalog)
+            TimelineRepository(userCatalog, postCatalog),
+            TestDispatchers()
         )
 
         viewModel.timelineFor(":irrelevant:")
