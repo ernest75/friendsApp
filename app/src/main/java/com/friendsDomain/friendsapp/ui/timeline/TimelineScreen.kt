@@ -29,9 +29,18 @@ import com.friendsDomain.friendsapp.ui.composables.ScreenTitle
 
 class TimelineScreenState {
     var posts by mutableStateOf(emptyList<Post>())
+    var loadedUserId by mutableStateOf("")
 
     fun updatePosts(newPosts: List<Post>) {
         this.posts = newPosts
+    }
+
+    fun shouldLoadPostFor(userId: String): Boolean {
+        if (loadedUserId != userId){
+            loadedUserId = userId
+            return true
+        }
+        return false
     }
 
 }
@@ -44,7 +53,9 @@ fun TimelineScreen(
 ) {
     val screenState by remember { mutableStateOf(TimelineScreenState()) }
     val timelineState by timelineViewModel.timelineState.observeAsState()
-    timelineViewModel.timelineFor(userId)
+    if (screenState.shouldLoadPostFor(userId)){
+        timelineViewModel.timelineFor(userId)
+    }
 
     if (timelineState is Posts) {
         val posts = (timelineState as Posts).posts
