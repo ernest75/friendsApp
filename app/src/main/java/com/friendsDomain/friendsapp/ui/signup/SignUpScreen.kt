@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
 import com.friendsDomain.friendsapp.ui.composables.BlockingLoading
+import com.friendsDomain.friendsapp.ui.composables.InfoMessage
 import com.friendsDomain.friendsapp.ui.composables.ScreenTitle
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpScreenState
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
@@ -87,43 +88,6 @@ fun SignUpScreen(
             stringResource = screenState.currentInfoMessage
         )
         BlockingLoading(screenState.isLoading)
-    }
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun InfoMessage(
-    isVisible: Boolean,
-    @StringRes stringResource: Int
-) {
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = slideInVertically(
-            initialOffsetY = { fullHeight -> -fullHeight  },
-            animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
-        ),
-        exit = fadeOut(
-            targetAlpha = 0f,
-            animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing )
-        )
-    ) {
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            color= MaterialTheme.colors.error,
-            elevation = 4.dp
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-
-            }
-            Text(
-                text = stringResource(id = stringResource),
-                modifier = Modifier.padding(16.dp),
-                color = MaterialTheme.colors.onError
-            )
-        }
     }
 }
 
