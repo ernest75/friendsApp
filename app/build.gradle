@@ -75,15 +75,12 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
     // Koin for Jetpack Compose
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+
+    //testing libraries
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.2"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.7.2"
-    testImplementation "org.junit.vintage:junit-vintage-engine:5.7.2"
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1")
 
     androidTestImplementation ("androidx.compose.ui:ui-test-junit4:$composeVersion")
-
-    testImplementation ("org.junit.platform:junit-platform-suite-api:1.7.2")
-    testImplementation ("org.junit.platform:junit-platform-runner:1.7.2")
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
 }
