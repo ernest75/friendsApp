@@ -2,9 +2,11 @@ package com.friendsDomain.friendsapp.timeline
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.friendsDomain.friendsapp.MainActivity
+import com.friendsDomain.friendsapp.domain.exceptions.BackendException
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
+import com.friendsDomain.friendsapp.signup.SignUpScreenTest
 import kotlinx.coroutines.delay
 import org.junit.After
 import org.junit.Rule
@@ -19,35 +21,35 @@ class TimelineScreenTest {
     val timelineTestRule = createAndroidComposeRule<MainActivity>()
 
     @Test
-    fun showEmptyTimelineMessage(){
+    fun showEmptyTimelineMessage() {
         val email = "lucy@friends.com"
         val password = "123Aerb$%&&ddd"
-        launchTimelineFor(email,password,timelineTestRule){
+        launchTimelineFor(email, password, timelineTestRule) {
 
-        } verify{
+        } verify {
             emptyTimelineMessageIsDisplayed()
         }
     }
 
     @Test
-    fun showsAvailablePosts(){
+    fun showsAvailablePosts() {
         val email = "bob@friends.com"
         val password = "b0bPassword###2021"
-        val post1 = Post("post1","bobId","Bob's first post",1L)
-        val post2 = Post("post2","bobId","Bob's second post",2L)
+        val post1 = Post("post1", "bobId", "Bob's first post", 1L)
+        val post2 = Post("post2", "bobId", "Bob's second post", 2L)
 
         replacePostCatalogWith(InMemoryPostCatalog(listOf(post1, post2)))
 
-        launchTimelineFor(email, password, timelineTestRule){
+        launchTimelineFor(email, password, timelineTestRule) {
 
         } verify {
-            postsAreDisplayed(post1,post2)
+            postsAreDisplayed(post1, post2)
         }
     }
 
     @Test
-    fun opensPostComposer(){
-        launchTimelineFor("test@friends.com","Passw0rd!!",timelineTestRule){
+    fun opensPostComposer() {
+        launchTimelineFor("test@friends.com", "Passw0rd!!", timelineTestRule) {
             tapOnCreateNewPost()
         } verify {
             newPostComposerIsDisplayed()
@@ -55,17 +57,32 @@ class TimelineScreenTest {
     }
 
     @Test
-    fun showLoadingIndicator(){
+    fun showLoadingIndicator() {
         replacePostCatalogWith(DelayingPostCatalog())
-        launchTimelineFor("testloading@friends.com","Passw0rd!!",timelineTestRule) {
+        launchTimelineFor(
+            "testloading@friends.com",
+            "Passw0rd!!", timelineTestRule
+        ) {
         } verify {
             loadingIndicatorIsDisplayed()
         }
+    }
 
+    @Test
+    fun showBackendError() {
+        replacePostCatalogWith(UnavailablePostCatalog())
+        launchTimelineFor(
+            "testbackEndError@friends.com",
+            "Passw0rd!!", timelineTestRule
+        ) {
+
+        } verify {
+            backendErrorIsDisplayed()
+        }
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         replacePostCatalogWith(InMemoryPostCatalog())
     }
 
@@ -75,10 +92,17 @@ class TimelineScreenTest {
         }
         loadKoinModules(replaceModule)
     }
+
     class DelayingPostCatalog : PostCatalog {
         override suspend fun postsFor(userIds: List<String>): List<Post> {
             delay(2000)
             return emptyList()
+        }
+
+    }
+    class UnavailablePostCatalog : PostCatalog {
+        override suspend fun postsFor(userIds: List<String>): List<Post> {
+            throw BackendException()
         }
 
     }
