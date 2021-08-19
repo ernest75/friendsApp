@@ -1,6 +1,5 @@
 package com.friendsDomain.friendsapp.ui.timeline
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,55 +22,11 @@ import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.timeline.TimelineViewModel
-import com.friendsDomain.friendsapp.timeline.state.TimelineState
+import com.friendsDomain.friendsapp.timeline.state.TimelineScreenState
 import com.friendsDomain.friendsapp.timeline.state.TimelineState.*
 import com.friendsDomain.friendsapp.ui.composables.BlockingLoading
 import com.friendsDomain.friendsapp.ui.composables.InfoMessage
 import com.friendsDomain.friendsapp.ui.composables.ScreenTitle
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
-class TimelineScreenState(
-    private val coroutineScope: CoroutineScope
-) {
-    var isLoading by mutableStateOf(false)
-    var posts by mutableStateOf(emptyList<Post>())
-    var loadedUserId by mutableStateOf("")
-    var isInfoMessageShowing by mutableStateOf(false)
-    var currentInfoMessage by mutableStateOf(0)
-
-    fun updatePosts(newPosts: List<Post>) {
-        isLoading = false
-        this.posts = newPosts
-    }
-
-    fun shouldLoadPostFor(userId: String): Boolean {
-        if (loadedUserId != userId){
-            loadedUserId = userId
-            return true
-        }
-        return false
-    }
-
-    fun showLoading(){
-        isLoading = true
-    }
-
-   fun showInfoMessageError(@StringRes infoMessage: Int) =
-       coroutineScope.launch() {
-       isLoading = false
-       if(currentInfoMessage!= infoMessage){
-           currentInfoMessage = infoMessage
-           if (!isInfoMessageShowing){
-               isInfoMessageShowing = true
-               delay(1500)
-               isInfoMessageShowing = false
-           }
-       }
-    }
-}
 
 @Composable
 fun TimelineScreen(
