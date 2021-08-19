@@ -3,6 +3,7 @@ package com.friendsDomain.friendsapp.timeline
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.friendsDomain.friendsapp.MainActivity
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
+import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
@@ -25,7 +26,7 @@ class TimelineScreenTest {
         val email = "lucy@friends.com"
         val password = "123Aerb$%&&ddd"
         launchTimelineFor(email, password, timelineTestRule) {
-
+            //no operation
         } verify {
             emptyTimelineMessageIsDisplayed()
         }
@@ -63,6 +64,7 @@ class TimelineScreenTest {
             "testloading@friends.com",
             "Passw0rd!!", timelineTestRule
         ) {
+            //no operation
         } verify {
             loadingIndicatorIsDisplayed()
         }
@@ -75,9 +77,22 @@ class TimelineScreenTest {
             "testbackEndError@friends.com",
             "Passw0rd!!", timelineTestRule
         ) {
-
+            //no operation
         } verify {
             backendErrorIsDisplayed()
+        }
+    }
+
+    @Test
+    fun showOfflineError() {
+        replacePostCatalogWith(OfflinePostCatalog())
+        launchTimelineFor(
+            "offlineError@friends.com",
+            "Passw0rd!!", timelineTestRule
+        ){
+            //no operation
+        } verify {
+            offlineErrorIsDisplayed()
         }
     }
 
@@ -98,11 +113,19 @@ class TimelineScreenTest {
             delay(2000)
             return emptyList()
         }
-
     }
+
+
     class UnavailablePostCatalog : PostCatalog {
         override suspend fun postsFor(userIds: List<String>): List<Post> {
             throw BackendException()
+        }
+    }
+
+
+    class OfflinePostCatalog : PostCatalog {
+        override suspend fun postsFor(userIds: List<String>): List<Post> {
+            throw ConnectionUnavailableException()
         }
 
     }

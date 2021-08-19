@@ -9,7 +9,7 @@
     <string name="about">About</string>
     <string name="duplicateAccountError">An account with this email has been already created</string>
     <string name="createAccountError">Could not create an account</string>
-    <string name="offLineError">Unable to create account, check your internet connection please</string>
+    <string name="offLineError">You seem to be offline</string>
     <string name="badEmailError">"Invalid email format"</string>
     <string name="badPasswordError">"Invalid password format"</string>
     <string name="loading">Loading</string>
