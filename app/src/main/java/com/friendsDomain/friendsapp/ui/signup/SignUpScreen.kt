@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.friendsDomain.friendsapp.R
+import com.friendsDomain.friendsapp.ui.composables.BlockingLoading
 import com.friendsDomain.friendsapp.ui.composables.ScreenTitle
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpScreenState
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
@@ -86,34 +87,6 @@ fun SignUpScreen(
             stringResource = screenState.currentInfoMessage
         )
         BlockingLoading(screenState.isLoading)
-    }
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun BlockingLoading(
-    isShowing: Boolean
-) {
-    AnimatedVisibility(
-        visible = isShowing,
-        enter = fadeIn(
-            initialAlpha = 0f,
-            animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
-        ),
-        exit = fadeOut(
-            targetAlpha = 0f,
-            animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing)
-        )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .testTag(stringResource(id = R.string.loading))
-                .background(MaterialTheme.colors.surface.copy(alpha = 0.7f)),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
     }
 }
 

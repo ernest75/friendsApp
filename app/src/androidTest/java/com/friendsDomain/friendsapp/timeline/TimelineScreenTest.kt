@@ -5,6 +5,7 @@ import com.friendsDomain.friendsapp.MainActivity
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
+import kotlinx.coroutines.delay
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -53,6 +54,16 @@ class TimelineScreenTest {
         }
     }
 
+    @Test
+    fun showLoadingIndicator(){
+        replacePostCatalogWith(DelayingPostCatalog())
+        launchTimelineFor("testloading@friends.com","Passw0rd!!",timelineTestRule) {
+        } verify {
+            loadingIndicatorIsDisplayed()
+        }
+
+    }
+
     @After
     fun tearDown(){
         replacePostCatalogWith(InMemoryPostCatalog())
@@ -63,5 +74,12 @@ class TimelineScreenTest {
             factory<PostCatalog> { postCatalog }
         }
         loadKoinModules(replaceModule)
+    }
+    class DelayingPostCatalog : PostCatalog {
+        override suspend fun postsFor(userIds: List<String>): List<Post> {
+            delay(2000)
+            return emptyList()
+        }
+
     }
 }
