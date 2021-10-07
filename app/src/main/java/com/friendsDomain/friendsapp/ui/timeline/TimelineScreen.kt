@@ -1,14 +1,19 @@
 package com.friendsDomain.friendsapp.ui.timeline
 
+import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
@@ -27,6 +32,7 @@ import com.friendsDomain.friendsapp.timeline.state.TimelineState.*
 import com.friendsDomain.friendsapp.ui.composables.BlockingLoading
 import com.friendsDomain.friendsapp.ui.composables.InfoMessage
 import com.friendsDomain.friendsapp.ui.composables.ScreenTitle
+import kotlinx.coroutines.delay
 
 @Composable
 fun TimelineScreen(
@@ -80,8 +86,7 @@ fun TimelineScreen(
                 }
             }
         }
-        InfoMessage(isVisible = screenState.isInfoMessageShowing,
-            stringResource = screenState.currentInfoMessage )
+        InfoMessage(stringResource = screenState.currentInfoMessage)
         BlockingLoading(isShowing = screenState.isLoading)
     }
 }

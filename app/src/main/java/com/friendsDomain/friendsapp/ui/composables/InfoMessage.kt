@@ -15,44 +15,54 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+
+import androidx.compose.runtime.livedata.observeAsState
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun InfoMessage(
-    isVisible: Boolean,
     @StringRes stringResource: Int
 ) {
+    if (stringResource == 0) return
+    var shouldShow by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = "displayMessage") {
+        shouldShow = true
+        delay(1500)
+        shouldShow = false
+    }
+
     AnimatedVisibility(
-        visible = isVisible,
+        visible = shouldShow,
         enter = slideInVertically(
-            initialOffsetY = { fullHeight -> -fullHeight  },
+            initialOffsetY = { fullHeight -> -fullHeight },
             animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
         ),
         exit = fadeOut(
             targetAlpha = 0f,
-            animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing )
+            animationSpec = tween(durationMillis = 250, easing = LinearOutSlowInEasing)
         )
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            color= MaterialTheme.colors.error,
+            color = MaterialTheme.colors.error,
             elevation = 4.dp
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = stringResource(id = stringResource),
+                    color = MaterialTheme.colors.onError
+                )
             }
-            Text(
-                text = stringResource(id = stringResource),
-                modifier = Modifier.padding(16.dp),
-                color = MaterialTheme.colors.onError
-            )
         }
     }
 }
+
