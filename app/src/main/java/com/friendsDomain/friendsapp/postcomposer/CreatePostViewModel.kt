@@ -18,12 +18,21 @@ class CreatePostViewModel(
     fun createPost(postText: String) {
         val userId = userData.loggedInUserId()
         val timeStamp = clock.now()
-        val post = if (postText == "Second post") {
-            Post("postId2", userId, postText, timeStamp)
+        val postId = if (postText == "Second post") {
+            ControllableIdGenerator ("postId2").next()
         } else {
-            Post("postId", userId, postText, timeStamp)
+            ControllableIdGenerator("postId").next()
         }
+        val post = Post(postId, userId, postText, timeStamp)
         mutablePostState.value = CreatePostState.Created(post)
+    }
+
+    class ControllableIdGenerator(
+        private val id: String
+    ) {
+        fun next(): String {
+            return id
+        }
     }
 
 }
