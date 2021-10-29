@@ -4,6 +4,7 @@ import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserData
 import com.friendsDomain.friendsapp.infrastructure.ControllableClock
+import com.friendsDomain.friendsapp.infrastructure.ControllableIdGenerator
 import com.friendsDomain.friendsapp.postcomposer.state.CreatePostState
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -19,7 +20,11 @@ class CreateAPostTest {
     fun aPostIsCreated() {
         val postText = "First post"
         val post = Post("postId","userId",postText,1L)
-        val viewModel = CreatePostViewModel(userData, ControllableClock(1L))
+        val viewModel = CreatePostViewModel(
+            userData,
+            ControllableClock(1L),
+            ControllableIdGenerator("postId")
+        )
 
         viewModel.createPost(postText)
 
@@ -30,7 +35,11 @@ class CreateAPostTest {
     fun anotherPostCreated() {
         val postText = "Second post"
         val post = Post("postId2", userId, postText,2L)
-        val viewModel = CreatePostViewModel(userData, ControllableClock(2L))
+        val viewModel = CreatePostViewModel(
+            userData,
+            ControllableClock(2L),
+            ControllableIdGenerator("postId2")
+        )
 
         viewModel.createPost(postText)
 
