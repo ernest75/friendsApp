@@ -84,7 +84,6 @@ fun SignUpScreen(
             }
         }
         InfoMessage(
-            isVisible = screenState.isInfoMessageShowing,
             stringResource = screenState.currentInfoMessage
         )
         BlockingLoading(screenState.isLoading)
