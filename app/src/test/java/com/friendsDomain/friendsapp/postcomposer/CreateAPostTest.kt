@@ -13,15 +13,12 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantTaskExecutorExtension::class)
 class CreateAPostTest {
 
-    private val userId = "userId"
-    private val userData = InMemoryUserData(userId)
-
     @Test
     fun aPostIsCreated() {
         val postText = "First post"
         val post = Post("postId","userId",postText,1L)
         val viewModel = CreatePostViewModel(
-            userData,
+            InMemoryUserData("userId"),
             ControllableClock(1L),
             ControllableIdGenerator("postId")
         )
@@ -34,9 +31,9 @@ class CreateAPostTest {
     @Test
     fun anotherPostCreated() {
         val postText = "Second post"
-        val post = Post("postId2", userId, postText,2L)
+        val post = Post("postId2", "userId", postText, 2L)
         val viewModel = CreatePostViewModel(
-            userData,
+            InMemoryUserData("userId"),
             ControllableClock(2L),
             ControllableIdGenerator("postId2")
         )
