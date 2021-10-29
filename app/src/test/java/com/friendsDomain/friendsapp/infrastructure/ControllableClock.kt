@@ -2,9 +2,9 @@ package com.friendsDomain.friendsapp.infrastructure
 
 class ControllableClock(
     private val timeStamp: Long
-) {
+) : Clock {
 
-    fun now(): Long {
+    override fun now(): Long {
         return timeStamp
     }
 }
