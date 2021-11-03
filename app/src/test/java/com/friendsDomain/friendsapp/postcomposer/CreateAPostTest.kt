@@ -25,7 +25,7 @@ class CreateAPostTest {
 
         viewModel.createPost(postText)
 
-        assertEquals(CreatePostState.Created(post),viewModel.posState.value)
+        assertEquals(CreatePostState.Created(post),viewModel.postState.value)
     }
 
     @Test
@@ -40,6 +40,6 @@ class CreateAPostTest {
 
         viewModel.createPost(postText)
 
-        assertEquals(CreatePostState.Created(post), viewModel.posState.value)
+        assertEquals(CreatePostState.Created(post), viewModel.postState.value)
     }
 }
