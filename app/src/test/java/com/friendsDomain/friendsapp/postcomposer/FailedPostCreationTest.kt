@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantTaskExecutorExtension::class)
 class FailedPostCreationTest {
-    
+
     @Test
     fun backEndError() {
         val viewModel = CreatePostViewModel(
@@ -21,6 +21,22 @@ class FailedPostCreationTest {
         )
 
         viewModel.createPost(":backEnd:")
-        Assertions.assertEquals(CreatePostState.BackEndError, viewModel.postState.value )
+
+        Assertions.assertEquals(CreatePostState.BackEndError, viewModel.postState.value)
     }
+
+    @Test
+    fun offlineError() {
+        val viewModel = CreatePostViewModel(
+            InMemoryUserData("userId"),
+            ControllableClock(1L),
+            ControllableIdGenerator("postId2")
+        )
+
+        viewModel.createPost(":offline:")
+
+        Assertions.assertEquals(CreatePostState.Offline, viewModel.postState.value)
+    }
+
+
 }

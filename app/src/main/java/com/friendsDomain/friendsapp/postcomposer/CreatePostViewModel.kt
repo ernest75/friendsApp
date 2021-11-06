@@ -20,7 +20,9 @@ class CreatePostViewModel(
     fun createPost(postText: String) {
         if (postText == ":backEnd:"){
             mutablePostState.value = CreatePostState.BackEndError
-        } else {
+        } else if(postText == ":offline:"){
+            mutablePostState.value = CreatePostState.Offline
+        }else {
             val post = createNewPost(postText)
             mutablePostState.value = CreatePostState.Created(post)
         }
