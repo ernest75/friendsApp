@@ -2,6 +2,7 @@ package com.friendsDomain.friendsapp.postcomposer
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
 import com.friendsDomain.friendsapp.domain.post.Post
+import com.friendsDomain.friendsapp.domain.post.PostRepository
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserData
 import com.friendsDomain.friendsapp.infrastructure.ControllableClock
 import com.friendsDomain.friendsapp.infrastructure.ControllableIdGenerator
@@ -17,10 +18,11 @@ class CreateAPostTest {
     fun aPostIsCreated() {
         val postText = "First post"
         val post = Post("postId","userId",postText,1L)
+        val userData = InMemoryUserData("userId")
+        val clock = ControllableClock(1L)
+        val idGenerator = ControllableIdGenerator("postId")
         val viewModel = CreatePostViewModel(
-            InMemoryUserData("userId"),
-            ControllableClock(1L),
-            ControllableIdGenerator("postId")
+            PostRepository(userData, clock, idGenerator)
         )
 
         viewModel.createPost(postText)
@@ -32,10 +34,11 @@ class CreateAPostTest {
     fun anotherPostCreated() {
         val postText = "Second post"
         val post = Post("postId2", "userId", postText, 2L)
+        val userData = InMemoryUserData("userId")
+        val clock = ControllableClock(2L)
+        val idGenerator = ControllableIdGenerator("postId2")
         val viewModel = CreatePostViewModel(
-            InMemoryUserData("userId"),
-            ControllableClock(2L),
-            ControllableIdGenerator("postId2")
+            PostRepository(userData, clock, idGenerator)
         )
 
         viewModel.createPost(postText)
