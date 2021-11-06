@@ -1,6 +1,7 @@
 package com.friendsDomain.friendsapp.postcomposer
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
+import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.PostRepository
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserData
 import com.friendsDomain.friendsapp.infrastructure.ControllableClock
@@ -19,7 +20,12 @@ class FailedPostCreationTest {
         val clock = ControllableClock(1L)
         val idGenerator = ControllableIdGenerator("postId1")
         val viewModel = CreatePostViewModel(
-            PostRepository(userData, clock, idGenerator)
+            PostRepository(
+                userData, InMemoryPostCatalog(
+                    idGenerator = idGenerator,
+                    clock = clock
+                )
+            )
         )
 
         viewModel.createPost(":backEnd:")
@@ -33,7 +39,12 @@ class FailedPostCreationTest {
         val clock = ControllableClock(1L)
         val idGenerator = ControllableIdGenerator("postId2")
         val viewModel = CreatePostViewModel(
-            PostRepository(userData, clock, idGenerator)
+            PostRepository(
+                userData, InMemoryPostCatalog(
+                    idGenerator = idGenerator,
+                    clock = clock
+                )
+            )
         )
 
         viewModel.createPost(":offline:")
