@@ -20,30 +20,33 @@ class CreatePostViewModel(
     val postState: LiveData<CreatePostState> = mutablePostState
 
     fun createPost(postText: String) {
-        val result = createNewPost(postText)
+        val result = PostRepository().createNewPost(postText)
         mutablePostState.value = result
     }
 
-    private fun createNewPost(postText: String): CreatePostState {
-        return try {
-            val post = addPost(userData.loggedInUserId(), postText)
-            CreatePostState.Created(post)
-        } catch (backendException: BackendException) {
-            CreatePostState.BackEndError
-        } catch (connectionUnavailableException: ConnectionUnavailableException) {
-            CreatePostState.Offline
-        }
-    }
+    inner class PostRepository {
 
-    private fun addPost(userId: String, postText: String): Post {
-        if (postText == ":backEnd:"){
-            throw BackendException()
-        } else if (postText == ":offline:"){
-            throw ConnectionUnavailableException()
+        fun createNewPost(postText: String): CreatePostState {
+            return try {
+                val post = addPost(userData.loggedInUserId(), postText)
+                CreatePostState.Created(post)
+            } catch (backendException: BackendException) {
+                CreatePostState.BackEndError
+            } catch (connectionUnavailableException: ConnectionUnavailableException) {
+                CreatePostState.Offline
+            }
         }
-        val timeStamp = clock.now()
-        val postId = idGenerator.next()
-        return Post(postId, userId, postText, timeStamp)
+
+        fun addPost(userId: String, postText: String): Post {
+            if (postText == ":backEnd:") {
+                throw BackendException()
+            } else if (postText == ":offline:") {
+                throw ConnectionUnavailableException()
+            }
+            val timeStamp = clock.now()
+            val postId = idGenerator.next()
+            return Post(postId, userId, postText, timeStamp)
+        }
     }
 
 }
