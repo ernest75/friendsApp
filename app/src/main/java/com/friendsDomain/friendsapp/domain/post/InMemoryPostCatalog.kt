@@ -1,6 +1,5 @@
 package com.friendsDomain.friendsapp.domain.post
 
-import com.friendsDomain.friendsapp.domain.exceptions.BackendException
 import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
 import com.friendsDomain.friendsapp.infrastructure.Clock
 import com.friendsDomain.friendsapp.infrastructure.IdGenerator
@@ -14,11 +13,6 @@ class InMemoryPostCatalog(
 ) : PostCatalog {
 
     override fun addPost(userId: String, postText: String): Post {
-        if (postText == ":backEnd:") {
-            throw BackendException()
-        } else if (postText == ":offline:") {
-            throw ConnectionUnavailableException()
-        }
         val timeStamp = clock.now()
         val postId = idGenerator.next()
         return Post(postId, userId, postText, timeStamp)

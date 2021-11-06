@@ -1,11 +1,12 @@
 package com.friendsDomain.friendsapp.postcomposer
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
-import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
+import com.friendsDomain.friendsapp.domain.exceptions.BackendException
+import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
+import com.friendsDomain.friendsapp.domain.post.Post
+import com.friendsDomain.friendsapp.domain.post.PostCatalog
 import com.friendsDomain.friendsapp.domain.post.PostRepository
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserData
-import com.friendsDomain.friendsapp.infrastructure.ControllableClock
-import com.friendsDomain.friendsapp.infrastructure.ControllableIdGenerator
 import com.friendsDomain.friendsapp.postcomposer.state.CreatePostState
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -16,15 +17,10 @@ class FailedPostCreationTest {
 
     @Test
     fun backEndError() {
-        val userData = InMemoryUserData("userId")
-        val clock = ControllableClock(1L)
-        val idGenerator = ControllableIdGenerator("postId1")
         val viewModel = CreatePostViewModel(
             PostRepository(
-                userData, InMemoryPostCatalog(
-                    idGenerator = idGenerator,
-                    clock = clock
-                )
+                InMemoryUserData("userId"),
+                UnavailablePostCatalog()
             )
         )
 
@@ -35,21 +31,38 @@ class FailedPostCreationTest {
 
     @Test
     fun offlineError() {
-        val userData = InMemoryUserData("userId")
-        val clock = ControllableClock(1L)
-        val idGenerator = ControllableIdGenerator("postId2")
         val viewModel = CreatePostViewModel(
             PostRepository(
-                userData, InMemoryPostCatalog(
-                    idGenerator = idGenerator,
-                    clock = clock
-                )
+                InMemoryUserData("userId"),
+                OfflinePostCatalog()
             )
         )
 
         viewModel.createPost(":offline:")
 
         Assertions.assertEquals(CreatePostState.Offline, viewModel.postState.value)
+    }
+
+    private class OfflinePostCatalog : PostCatalog {
+        override fun addPost(userId: String, postText: String): Post {
+            throw ConnectionUnavailableException()
+        }
+
+        override suspend fun postsFor(userIds: List<String>): List<Post> {
+            TODO("Not yet implemented")
+        }
+
+    }
+
+    private class UnavailablePostCatalog : PostCatalog {
+        override fun addPost(userId: String, postText: String): Post {
+            throw BackendException()
+        }
+
+        override suspend fun postsFor(userIds: List<String>): List<Post> {
+            TODO("Not yet implemented")
+        }
+
     }
 
 
