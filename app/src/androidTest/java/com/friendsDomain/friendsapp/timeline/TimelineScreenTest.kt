@@ -7,7 +7,6 @@ import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableExcep
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.post.PostCatalog
-import com.friendsDomain.friendsapp.signup.SignUpScreenTest
 import kotlinx.coroutines.delay
 import org.junit.After
 import org.junit.Rule
@@ -109,6 +108,10 @@ class TimelineScreenTest {
     }
 
     class DelayingPostCatalog : PostCatalog {
+        override fun addPost(userId: String, postText: String): Post {
+            TODO("Not yet implemented")
+        }
+
         override suspend fun postsFor(userIds: List<String>): List<Post> {
             delay(2000)
             return emptyList()
@@ -117,6 +120,10 @@ class TimelineScreenTest {
 
 
     class UnavailablePostCatalog : PostCatalog {
+        override fun addPost(userId: String, postText: String): Post {
+            TODO("Not yet implemented")
+        }
+
         override suspend fun postsFor(userIds: List<String>): List<Post> {
             throw BackendException()
         }
@@ -124,6 +131,10 @@ class TimelineScreenTest {
 
 
     class OfflinePostCatalog : PostCatalog {
+        override fun addPost(userId: String, postText: String): Post {
+            TODO("Not yet implemented")
+        }
+
         override suspend fun postsFor(userIds: List<String>): List<Post> {
             throw ConnectionUnavailableException()
         }

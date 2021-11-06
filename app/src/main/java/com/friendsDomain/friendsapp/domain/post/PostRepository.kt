@@ -24,7 +24,7 @@ class PostRepository(
         }
     }
 
-    fun addPost(userId: String, postText: String): Post {
+    private fun addPost(userId: String, postText: String): Post {
         if (postText == ":backEnd:") {
             throw BackendException()
         } else if (postText == ":offline:") {

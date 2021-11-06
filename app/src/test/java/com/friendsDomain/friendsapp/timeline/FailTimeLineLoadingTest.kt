@@ -47,6 +47,10 @@ class FailTimeLineLoadingTest {
 
     private class UnavailablePostCatalog() :
         PostCatalog {
+        override fun addPost(userId: String, postText: String): Post {
+            TODO("Not yet implemented")
+        }
+
         override suspend fun postsFor(userIds: List<String>): List<Post> {
             throw BackendException()
         }
@@ -54,6 +58,10 @@ class FailTimeLineLoadingTest {
     }
 
     private class OfflinePostCatalog : PostCatalog {
+        override fun addPost(userId: String, postText: String): Post {
+            TODO("Not yet implemented")
+        }
+
         override suspend fun postsFor(userIds: List<String>): List<Post> {
             throw ConnectionUnavailableException()
         }
