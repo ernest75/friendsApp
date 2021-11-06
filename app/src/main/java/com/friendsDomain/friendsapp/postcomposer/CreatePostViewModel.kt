@@ -9,7 +9,6 @@ import com.friendsDomain.friendsapp.domain.user.InMemoryUserData
 import com.friendsDomain.friendsapp.infrastructure.Clock
 import com.friendsDomain.friendsapp.infrastructure.IdGenerator
 import com.friendsDomain.friendsapp.postcomposer.state.CreatePostState
-import com.friendsDomain.friendsapp.timeline.state.TimelineState
 
 class CreatePostViewModel(
     private val userData: InMemoryUserData,
@@ -21,13 +20,18 @@ class CreatePostViewModel(
     val postState: LiveData<CreatePostState> = mutablePostState
 
     fun createPost(postText: String) {
-        try {
-            val post = addPost(userData.loggedInUserId(),postText)
-            mutablePostState.value = CreatePostState.Created(post)
-        } catch (backendException: BackendException ){
-            mutablePostState.value = CreatePostState.BackEndError
-        } catch (connectionUnavailableException: ConnectionUnavailableException){
-            mutablePostState.value = CreatePostState.Offline
+        val result = createNewPost(postText)
+        mutablePostState.value = result
+    }
+
+    private fun createNewPost(postText: String): CreatePostState {
+        return try {
+            val post = addPost(userData.loggedInUserId(), postText)
+            CreatePostState.Created(post)
+        } catch (backendException: BackendException) {
+            CreatePostState.BackEndError
+        } catch (connectionUnavailableException: ConnectionUnavailableException) {
+            CreatePostState.Offline
         }
     }
 
