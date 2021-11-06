@@ -1,7 +1,6 @@
 package com.friendsDomain.friendsapp.timeline
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
-import com.friendsDomain.friendsapp.app.DefaultDispatchers
 import com.friendsDomain.friendsapp.app.TestDispatchers
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.timeline.TimelineRepository
