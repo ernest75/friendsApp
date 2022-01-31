@@ -9,4 +9,6 @@ sealed class CreatePostState {
     object BackEndError : CreatePostState()
 
     object Offline : CreatePostState()
+
+    object Loading : CreatePostState()
 }
