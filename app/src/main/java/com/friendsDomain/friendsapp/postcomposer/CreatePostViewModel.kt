@@ -21,12 +21,11 @@ class CreatePostViewModel(
     fun createPost(postText: String) {
         viewModelScope.launch {
             mutablePostState.value = CreatePostState.Loading
-            val result = withContext(dispatchers.background) {
+            mutablePostState.value = withContext(dispatchers.background) {
                 postRepository
                     .createNewPost(postText)
 
             }
-            mutablePostState.value = result
         }
     }
 }
