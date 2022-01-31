@@ -65,7 +65,6 @@ class FailTimeLineLoadingTest {
         override suspend fun postsFor(userIds: List<String>): List<Post> {
             throw ConnectionUnavailableException()
         }
-
     }
 
 }
