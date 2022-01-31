@@ -2,11 +2,7 @@ package com.friendsDomain.friendsapp.signup
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.friendsDomain.friendsapp.MainActivity
-import com.friendsDomain.friendsapp.domain.exceptions.BackendException
-import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
-import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
-import com.friendsDomain.friendsapp.domain.user.User
-import com.friendsDomain.friendsapp.domain.user.UserCatalog
+import com.friendsDomain.friendsapp.domain.user.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -22,17 +18,17 @@ class SignUpScreenTest {
     val signUpTestRule = createAndroidComposeRule<MainActivity>()
 
     private val signUpModule = module {
-        factory <UserCatalog> { InMemoryUserCatalog() }
+        factory<UserCatalog> { InMemoryUserCatalog() }
     }
 
     @Before
-    fun setUp(){
+    fun setUp() {
         loadKoinModules(signUpModule)
     }
 
     @Test
-    fun performSignUp(){
-        launchSignUpScreen(signUpTestRule){
+    fun performSignUp() {
+        launchSignUpScreen(signUpTestRule) {
             typeEmail("ernest@friends.com")
             typePassword("Passw0rd!")
             submit()
@@ -42,57 +38,57 @@ class SignUpScreenTest {
     }
 
     @Test
-    fun displayBadEmailError(){
-        launchSignUpScreen(signUpTestRule){
+    fun displayBadEmailError() {
+        launchSignUpScreen(signUpTestRule) {
             typeEmail("badEmail")
             typePassword("Passw0rd!")
             submit()
-        } verify{
+        } verify {
             badEmailErrorIsShown()
         }
     }
 
     @Test
-    fun resetBadEmailError(){
-        launchSignUpScreen(signUpTestRule){
+    fun resetBadEmailError() {
+        launchSignUpScreen(signUpTestRule) {
             typeEmail("badEmail")
             typePassword("Passw0rd!")
             submit()
             typeEmail("email@friends.com")
-        } verify{
+        } verify {
             badEmailErrorIsNotShown()
         }
     }
 
     @Test
-    fun displayBadPasswordError(){
-        launchSignUpScreen(signUpTestRule){
+    fun displayBadPasswordError() {
+        launchSignUpScreen(signUpTestRule) {
             typeEmail("ernest@friends.com")
             typePassword("badPassword")
             submit()
-        } verify{
+        } verify {
             badPasswordErrorIsShown()
         }
     }
 
     @Test
-    fun resetBadPasswordError(){
-        launchSignUpScreen(signUpTestRule){
+    fun resetBadPasswordError() {
+        launchSignUpScreen(signUpTestRule) {
             typeEmail("ernest@friends.com")
             typePassword("badPassword")
             submit()
             typePassword("Passw0rd!")
-        } verify{
+        } verify {
             badPasswordErrorIsNotShown()
         }
     }
 
     @Test
-    fun displayDuplicateAccountError()= runBlocking<Unit> {
+    fun displayDuplicateAccountError() = runBlocking<Unit> {
         val signedUpUserEmail = "alice@email.com"
         val signedUserPassword = "@l1cePass"
         replaceUserCatalogWith(InMemoryUserCatalog().apply {
-            createUser(signedUpUserEmail, signedUserPassword,"")
+            createUser(signedUpUserEmail, signedUserPassword, "")
         })
 
         launchSignUpScreen(signUpTestRule) {
@@ -107,7 +103,7 @@ class SignUpScreenTest {
     @Test
     fun displayBackEndError() = runBlocking<Unit> {
         replaceUserCatalogWith(UnavailableUserCatalog())
-        launchSignUpScreen(signUpTestRule){
+        launchSignUpScreen(signUpTestRule) {
             typeEmail("joe@friends.com")
             typePassword("J0ePass!")
             submit()
@@ -131,32 +127,19 @@ class SignUpScreenTest {
     }
 
     @Test
-    fun displayBlockingLoading(){
+    fun displayBlockingLoading() {
         replaceUserCatalogWith(DelayingUserCatalog())
-        launchSignUpScreen(signUpTestRule){
+        launchSignUpScreen(signUpTestRule) {
             typeEmail("ernest@friends.com")
             typePassword("Ern3stPass!")
             submit()
-        }verify {
+        } verify {
             blockingLoadingIsShown()
         }
     }
 
-    class DelayingUserCatalog : UserCatalog {
-        override suspend fun createUser(email: String, password: String, about: String): User {
-            delay(1000)
-            return User("SomeID",email,about)
-        }
-
-        override fun followedBy(userId: String): List<String> {
-            TODO("Not yet implemented")
-        }
-
-    }
-
-
     @After
-    fun tearDown(){
+    fun tearDown() {
         replaceUserCatalogWith(InMemoryUserCatalog())
     }
 
@@ -167,10 +150,10 @@ class SignUpScreenTest {
         loadKoinModules(replaceModule)
     }
 
-    class UnavailableUserCatalog : UserCatalog {
-
+    class DelayingUserCatalog : UserCatalog {
         override suspend fun createUser(email: String, password: String, about: String): User {
-            throw BackendException()
+            delay(1000)
+            return User("SomeID", email, about)
         }
 
         override fun followedBy(userId: String): List<String> {
@@ -178,16 +161,4 @@ class SignUpScreenTest {
         }
 
     }
-
-    class OfflineUserCatalog : UserCatalog {
-        override suspend fun createUser(email: String, password: String, about: String): User {
-            throw ConnectionUnavailableException()
-        }
-
-        override fun followedBy(userId: String): List<String> {
-            TODO("Not yet implemented")
-        }
-
-    }
-
 }

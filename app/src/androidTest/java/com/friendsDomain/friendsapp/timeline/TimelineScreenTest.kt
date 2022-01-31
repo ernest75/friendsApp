@@ -98,7 +98,7 @@ class TimelineScreenTest {
 
     private fun replacePostCatalogWith(postCatalog: PostCatalog) {
         val replaceModule = module {
-            factory<PostCatalog> { postCatalog }
+            factory { postCatalog }
         }
         loadKoinModules(replaceModule)
     }
