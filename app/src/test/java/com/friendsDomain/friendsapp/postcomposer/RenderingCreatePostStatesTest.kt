@@ -15,22 +15,27 @@ import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantTaskExecutorExtension::class)
 class RenderingCreatePostStatesTest {
+    private val userID = "userId"
+    private val postId = "postId"
+    private val postText = "postText"
+    private val timestamp = 1L
+
 
     private val clock = ControllableClock(1L)
-    private val idGenerator = ControllableIdGenerator("postId")
+    private val idGenerator = ControllableIdGenerator(postId)
     private val postCatalog = InMemoryPostCatalog(idGenerator = idGenerator, clock = clock)
-    private val userData = InMemoryUserData("userId")
+    private val userData = InMemoryUserData(userID)
     private val postRepository = PostRepository(userData, postCatalog)
     private val dispatchers = TestDispatchers()
     val viewModel = CreatePostViewModel(postRepository, dispatchers)
 
     @Test
     fun uiStatesAreDeliveredInParticularOrder() {
-        val post = Post("postId", "userId", "postText", 1L)
+        val post = Post(postId, userID, postText, timestamp)
         val deliveredStates = mutableListOf<CreatePostState>()
         viewModel.postState.observeForever { deliveredStates.add(it) }
 
-        viewModel.createPost("postText")
+        viewModel.createPost(postText)
 
         Assertions.assertEquals(
             listOf(CreatePostState.Loading, CreatePostState.Created(post)),
