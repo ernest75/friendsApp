@@ -6,7 +6,7 @@ import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.timeline.TimelineRepository
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -21,7 +21,7 @@ class RenderingTimelineStatesTest {
     @Test
     fun timelineStatesExposedToAnObserver() {
         val renderedStates = mutableListOf<TimelineState>()
-        viewModel.timelineState.observeForever{ renderedStates.add(it)}
+        viewModel.timelineState.observeForever { renderedStates.add(it) }
 
         viewModel.timelineFor(":irrelevantId:")
 

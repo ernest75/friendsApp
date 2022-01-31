@@ -33,11 +33,11 @@ class CredentialsValidationTest {
             TestDispatchers()
         )
 
-        viewModel.createAccount(email,":password:",":about:")
+        viewModel.createAccount(email, ":password:", ":about:")
 
-        assertEquals(SignUpState.BadEmail,viewModel.signUpState.value)
+        assertEquals(SignUpState.BadEmail, viewModel.signUpState.value)
     }
-    
+
     @ParameterizedTest
     @CsvSource(
         "''",
@@ -54,21 +54,20 @@ class CredentialsValidationTest {
             TestDispatchers()
         )
 
-        viewModel.createAccount("ernest@friemds.com", password,":about:")
+        viewModel.createAccount("ernest@friemds.com", password, ":about:")
 
-        assertEquals(SignUpState.BadPassword,viewModel.signUpState.value)
+        assertEquals(SignUpState.BadPassword, viewModel.signUpState.value)
     }
-    
+
     @Test
     fun validCredentials() {
         val validator = RegexCredentialsValidator()
 
         val result = validator.validate("ernest@friemds.com", "aBc@123456")
 
-        assertEquals(CredentialsValidationResult.Valid,result)
+        assertEquals(CredentialsValidationResult.Valid, result)
 
     }
-
 
 
 }

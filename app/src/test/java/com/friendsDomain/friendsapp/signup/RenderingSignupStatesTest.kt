@@ -8,7 +8,7 @@ import com.friendsDomain.friendsapp.domain.user.UserRepository
 import com.friendsDomain.friendsapp.domain.validation.RegexCredentialsValidator
 import com.friendsDomain.friendsapp.ui.signup.SignUpViewModel
 import com.friendsDomain.friendsapp.ui.signup.state.SignUpState
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 

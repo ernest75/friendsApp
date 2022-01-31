@@ -18,7 +18,7 @@ class CreateAPostTest {
     @Test
     fun aPostIsCreated() {
         val postText = "First post"
-        val post = Post("postId","userId",postText,1L)
+        val post = Post("postId", "userId", postText, 1L)
         val userData = InMemoryUserData("userId")
         val clock = ControllableClock(1L)
         val idGenerator = ControllableIdGenerator("postId")
@@ -33,7 +33,7 @@ class CreateAPostTest {
 
         viewModel.createPost(postText)
 
-        assertEquals(CreatePostState.Created(post),viewModel.postState.value)
+        assertEquals(CreatePostState.Created(post), viewModel.postState.value)
     }
 
     @Test

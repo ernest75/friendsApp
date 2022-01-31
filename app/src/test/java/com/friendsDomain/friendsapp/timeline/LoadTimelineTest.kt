@@ -9,7 +9,7 @@ import com.friendsDomain.friendsapp.domain.user.Following
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserCatalog
 import com.friendsDomain.friendsapp.infrastructure.builder.UserBuilder.Companion.aUser
 import com.friendsDomain.friendsapp.timeline.state.TimelineState
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 

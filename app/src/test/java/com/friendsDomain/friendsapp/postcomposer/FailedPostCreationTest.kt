@@ -1,11 +1,9 @@
 package com.friendsDomain.friendsapp.postcomposer
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
-import com.friendsDomain.friendsapp.domain.exceptions.BackendException
-import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
-import com.friendsDomain.friendsapp.domain.post.Post
-import com.friendsDomain.friendsapp.domain.post.PostCatalog
+import com.friendsDomain.friendsapp.domain.post.OfflinePostCatalog
 import com.friendsDomain.friendsapp.domain.post.PostRepository
+import com.friendsDomain.friendsapp.domain.post.UnavailablePostCatalog
 import com.friendsDomain.friendsapp.domain.user.InMemoryUserData
 import com.friendsDomain.friendsapp.postcomposer.state.CreatePostState
 import org.junit.jupiter.api.Assertions
@@ -42,28 +40,4 @@ class FailedPostCreationTest {
 
         Assertions.assertEquals(CreatePostState.Offline, viewModel.postState.value)
     }
-
-    private class OfflinePostCatalog : PostCatalog {
-        override fun addPost(userId: String, postText: String): Post {
-            throw ConnectionUnavailableException()
-        }
-
-        override suspend fun postsFor(userIds: List<String>): List<Post> {
-            TODO("Not yet implemented")
-        }
-
-    }
-
-    private class UnavailablePostCatalog : PostCatalog {
-        override fun addPost(userId: String, postText: String): Post {
-            throw BackendException()
-        }
-
-        override suspend fun postsFor(userIds: List<String>): List<Post> {
-            TODO("Not yet implemented")
-        }
-
-    }
-
-
 }

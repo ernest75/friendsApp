@@ -2,11 +2,7 @@ package com.friendsDomain.friendsapp.timeline
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.friendsDomain.friendsapp.MainActivity
-import com.friendsDomain.friendsapp.domain.exceptions.BackendException
-import com.friendsDomain.friendsapp.domain.exceptions.ConnectionUnavailableException
-import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
-import com.friendsDomain.friendsapp.domain.post.Post
-import com.friendsDomain.friendsapp.domain.post.PostCatalog
+import com.friendsDomain.friendsapp.domain.post.*
 import kotlinx.coroutines.delay
 import org.junit.After
 import org.junit.Rule
@@ -116,28 +112,5 @@ class TimelineScreenTest {
             delay(2000)
             return emptyList()
         }
-    }
-
-
-    class UnavailablePostCatalog : PostCatalog {
-        override fun addPost(userId: String, postText: String): Post {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun postsFor(userIds: List<String>): List<Post> {
-            throw BackendException()
-        }
-    }
-
-
-    class OfflinePostCatalog : PostCatalog {
-        override fun addPost(userId: String, postText: String): Post {
-            TODO("Not yet implemented")
-        }
-
-        override suspend fun postsFor(userIds: List<String>): List<Post> {
-            throw ConnectionUnavailableException()
-        }
-
     }
 }
