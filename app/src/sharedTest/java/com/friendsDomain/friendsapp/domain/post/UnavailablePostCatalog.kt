@@ -3,7 +3,7 @@ package com.friendsDomain.friendsapp.domain.post
 import com.friendsDomain.friendsapp.domain.exceptions.BackendException
 
 class UnavailablePostCatalog : PostCatalog {
-    override fun addPost(userId: String, postText: String): Post {
+    override suspend fun addPost(userId: String, postText: String): Post {
         throw BackendException()
     }
 

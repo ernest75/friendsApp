@@ -103,8 +103,8 @@ class TimelineScreenTest {
         loadKoinModules(replaceModule)
     }
 
-    class DelayingPostCatalog : PostCatalog {
-        override fun addPost(userId: String, postText: String): Post {
+    class  DelayingPostCatalog : PostCatalog {
+        override suspend fun addPost(userId: String, postText: String): Post {
             TODO("Not yet implemented")
         }
 

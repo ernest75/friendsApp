@@ -10,7 +10,7 @@ class PostRepository(
     private val inMemoryPostCatalog: PostCatalog
 ) {
 
-    fun createNewPost(postText: String): CreatePostState {
+    suspend fun createNewPost(postText: String): CreatePostState {
         return try {
             val post = inMemoryPostCatalog.addPost(userData.loggedInUserId(), postText)
             CreatePostState.Created(post)
