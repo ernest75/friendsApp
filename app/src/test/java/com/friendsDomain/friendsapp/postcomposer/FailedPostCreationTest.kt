@@ -1,6 +1,7 @@
 package com.friendsDomain.friendsapp.postcomposer
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
+import com.friendsDomain.friendsapp.app.TestDispatchers
 import com.friendsDomain.friendsapp.domain.post.OfflinePostCatalog
 import com.friendsDomain.friendsapp.domain.post.PostRepository
 import com.friendsDomain.friendsapp.domain.post.UnavailablePostCatalog
@@ -19,7 +20,8 @@ class FailedPostCreationTest {
             PostRepository(
                 InMemoryUserData("userId"),
                 UnavailablePostCatalog()
-            )
+            ),
+            dispatchers = TestDispatchers()
         )
 
         viewModel.createPost(":backEnd:")
@@ -33,7 +35,8 @@ class FailedPostCreationTest {
             PostRepository(
                 InMemoryUserData("userId"),
                 OfflinePostCatalog()
-            )
+            ),
+            dispatchers = TestDispatchers()
         )
 
         viewModel.createPost(":offline:")

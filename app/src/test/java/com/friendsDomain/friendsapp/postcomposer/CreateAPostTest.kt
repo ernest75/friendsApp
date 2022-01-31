@@ -1,6 +1,7 @@
 package com.friendsDomain.friendsapp.postcomposer
 
 import com.friendsDomain.friendsapp.InstantTaskExecutorExtension
+import com.friendsDomain.friendsapp.app.TestDispatchers
 import com.friendsDomain.friendsapp.domain.post.InMemoryPostCatalog
 import com.friendsDomain.friendsapp.domain.post.Post
 import com.friendsDomain.friendsapp.domain.post.PostRepository
@@ -28,7 +29,8 @@ class CreateAPostTest {
                     idGenerator = idGenerator,
                     clock = clock
                 )
-            )
+            ),
+            dispatchers = TestDispatchers()
         )
 
         viewModel.createPost(postText)
@@ -49,7 +51,8 @@ class CreateAPostTest {
                     idGenerator = idGenerator,
                     clock = clock
                 )
-            )
+            ),
+            dispatchers = TestDispatchers()
         )
 
         viewModel.createPost(postText)
