@@ -16,4 +16,6 @@
     <string name="emptyTimelineMessage">No post available yet ;)</string>
     <string name="createNewPost">Create new post</string>
     <string name="fetchingTimelineError">Failed fetching the timeloine :(</string>
+    <string name="newPostHint">What\'s on your mind?</string>
+    <string name="submitPost">SubmitPost</string>
 </resources>
